@@ -1,2 +1,8 @@
 streamlit 
 pandas
+matplotlib.pyplot
+matplotlib.ticker
+seaborn
+json
+urllib.request
+matplotlib.dates
