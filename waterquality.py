@@ -12,7 +12,7 @@ from streamlit_folium import st_folium
 import time
 from reportlab.lib.styles import getSampleStyleSheet
 
-qpcr=pd.read_csv("../Raw_data/QPCR.csv")
+qpcr=pd.read_csv("Raw_data/QPCR.csv")
 st.markdown(
     """
 <style>
