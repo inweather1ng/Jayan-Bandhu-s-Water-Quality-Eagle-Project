@@ -115,7 +115,7 @@ Conductivity from 200-500: *tolerable*,
 
     
     
-data=pd.read_csv("Raw_data/Waterquality.py")
+data=pd.read_csv("Raw_data/Waterquality.csv")
 reqcols=["DO","SPC","Turbidity","Water Temp","PH","Site"]
 # --- Main Layout ---
 st.title("Dry Creek Water Quality Monitoring Project")
