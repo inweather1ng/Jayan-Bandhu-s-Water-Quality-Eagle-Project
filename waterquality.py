@@ -22,7 +22,7 @@ st.markdown(
 }
 /* Adjust the label text size above the number */
 [data-testid="stMetricLabel"] {
-    font-size: 14px; /* Fixed: 6px was microscopic */
+    font-size: 14px; /*  */
 }
 /* Adjust the delta text size below the number */
 [data-testid="stMetricDelta"] {
@@ -33,10 +33,11 @@ st.markdown(
     unsafe_allow_html=True,
 )
 #if "active_tab" not in st.session_state:
-   # st.session_state.active_tab=0
+    #st.session_state.active_tab=0
 # --- Data Processing ---
 # Adjust filepath if necessary
 
+    
 def send_alerts(data):
     alert=None
     latest=data.iloc[-1]
@@ -169,10 +170,13 @@ selected_tab=st.sidebar.radio("Select Tab",tab_names)
 miners_ravine["Date"] = pd.to_datetime(miners_ravine["Date"], format="%m/%d/%Y")
 dry_creek["Date"] = pd.to_datetime(dry_creek["Date"], format="%m/%d/%Y")
 
-    
+def on_tab_change():
+    tab=selection
+    st.session_state.active_tab()=tab_names.index(tab)
 if selected_tab=="Overview":
     st.header(f"Water Quality Dashboard for The Dry Creek Watershed")
     st.space(size="small")
+    st.markdown("This project is a monthly Water Quality monitoring project of the Dry Creek watershed. We are monitoring 5 different physiochemical parameters and 2 eDNA samples. We currently measure Dissolved Oxygen(DO), Conductivity(SPC), Turbidity, Water temperature, and PH")
     st.subheader("Miners Ravine")
     if not miners_ravine.empty:
         latest_row = miners_ravine.iloc[-1]
@@ -404,6 +408,7 @@ if selected_tab=="Overview":
     else:
         dry_status="Stressed"
     # st.title("Dry creek water quality monitoring Site map")
+    st.header("This is a map of our two sampling sites on the Dry Creek.")
     mapdata=pd.DataFrame(
         {
             
@@ -426,8 +431,7 @@ if selected_tab=="Overview":
         if not match.empty:
             st.session_state.active_tab=match.iloc[0]['Tab']
             st.rerun()
-
-
+    st.caption("This map shows the three monitoring sites of this project in the form of blue circles.")
 
 
 
