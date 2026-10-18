@@ -172,7 +172,7 @@ dry_creek["Date"] = pd.to_datetime(dry_creek["Date"], format="%m/%d/%Y")
 
 def on_tab_change():
     tab=selection
-    st.session_state.active_tab()=tab_names.index(tab)
+    st.session_state.active_tab=tab_names.index(tab)
 if selected_tab=="Overview":
     st.header(f"Water Quality Dashboard for The Dry Creek Watershed")
     st.space(size="small")
