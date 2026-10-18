@@ -1,8 +1,10 @@
 streamlit 
 pandas
-matplotlib.pyplot
-matplotlib.ticker
+matplotlib
 seaborn
-json
-urllib.request
-matplotlib.dates
+folium
+streamlit-folium
+reportlab
+
+
+
