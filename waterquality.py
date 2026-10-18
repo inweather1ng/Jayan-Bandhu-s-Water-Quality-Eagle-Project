@@ -115,47 +115,47 @@ Conductivity from 200-500: *tolerable*,
 
     
     
-
+data=pd.read_csv("Raw_data/Waterquality.py")
 reqcols=["DO","SPC","Turbidity","Water Temp","PH","Site"]
 # --- Main Layout ---
 st.title("Dry Creek Water Quality Monitoring Project")
-upload=(st.file_uploader(label="Enter your data here",type="csv"))
-time.sleep(5)
-is_valid=None
-missing=[]
-if upload != None:
-    data=pd.read_csv(upload)
-    data=data.dropna()
-    cols=data.columns.str.strip()
-    for c in reqcols:
-        if c not in cols:
-            missing.append(c)
-    if len(missing)>0:
-        is_valid=False
-        st.error(f"The following columns are missing from the data: {missing}, try adding them or renaming them. THere are the required columns: {reqcols}")
-    else:
-        errors=[]
-        do_prob = ((data["DO"] <4) | (data["DO"]>20))
-        cond_prob = ((data["SPC"] <10) | (data["SPC"]>1000)) 
-        ph_prob = ((data['PH']<4) | (data['PH'] > 11))
-        turbprob = ((data["Turbidity"]>500)| (data["Turbidity"]<0))
-        tempprob = ((data['Water Temp']>40) | (data['Water Temp']<0))
-        if do_prob.any():
-            errors.append("DO is out of the Required range\n")
-        if cond_prob.any():
-            errors.append("Some of your conductivity values are off \n")
-        if ph_prob.any():
-            errors.append("Some of your PH values are off\n")
-        if turbprob.any():
-            errors.append("Your turbidity values are off \n")
-        if tempprob.any():
-            errors.append("Your temperature values are off")
-        if len(errors)>0:
-            st.error(f"{errors}")
-        else:
-            is_valid=True
-            miners_ravine = data[data["Site"] == "JBDC01"]
-            dry_creek = data[data["Site"] == "JBDC02"]
+# upload=(st.file_uploader(label="Enter your data here",type="csv"))
+# time.sleep(5)
+# is_valid=None
+# missing=[]
+# if upload != None:
+#     data=pd.read_csv(upload)
+#     data=data.dropna()
+#     cols=data.columns.str.strip()
+#     for c in reqcols:
+#         if c not in cols:
+#             missing.append(c)
+#     if len(missing)>0:
+#         is_valid=False
+#         st.error(f"The following columns are missing from the data: {missing}, try adding them or renaming them. THere are the required columns: {reqcols}")
+#     else:
+#         errors=[]
+#         do_prob = ((data["DO"] <4) | (data["DO"]>20))
+#         cond_prob = ((data["SPC"] <10) | (data["SPC"]>1000)) 
+#         ph_prob = ((data['PH']<4) | (data['PH'] > 11))
+#         turbprob = ((data["Turbidity"]>500)| (data["Turbidity"]<0))
+#         tempprob = ((data['Water Temp']>40) | (data['Water Temp']<0))
+#         if do_prob.any():
+#             errors.append("DO is out of the Required range\n")
+#         if cond_prob.any():
+#             errors.append("Some of your conductivity values are off \n")
+#         if ph_prob.any():
+#             errors.append("Some of your PH values are off\n")
+#         if turbprob.any():
+#             errors.append("Your turbidity values are off \n")
+#         if tempprob.any():
+#             errors.append("Your temperature values are off")
+#         if len(errors)>0:
+#             st.error(f"{errors}")
+#         else:
+#             is_valid=True
+miners_ravine = data[data["Site"] == "JBDC01"]
+dry_creek = data[data["Site"] == "JBDC02"]
 
 tab_names=["Overview","Dry creek","Miners Ravine", "Comparative analysis","Correlation analysis","PDF fownload","eDNA results","Simulation"]
 selected_tab=st.sidebar.radio("Select Tab",tab_names,index=st.session_state.active_tab)
