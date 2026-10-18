@@ -459,7 +459,7 @@ if selected_tab=="Overview":
     # )
 
 
-if selected_tab=="Dry Creek":
+elif selected_tab=="Dry Creek":
     fig4,ax4=plt.subplots()
     sns.lineplot(data=dry_creek,x="Date",y="DO",ax=ax4,marker="o",color="black")
     ax4.set_title("DO trend for Dry Creek site")
