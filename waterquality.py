@@ -162,11 +162,12 @@ selected_tab=st.sidebar.radio("Select Tab",tab_names,index=st.session_state.acti
 st.session_state.active_tab=tab_names.index(selected_tab)
 
     
-if not data.empty and is_valid==True:
+# if not data.empty 
+#and is_valid==True:
 
 
-    miners_ravine["Date"] = pd.to_datetime(miners_ravine["Date"], format="%m/%d/%Y")
-    dry_creek["Date"] = pd.to_datetime(dry_creek["Date"], format="%m/%d/%Y")
+miners_ravine["Date"] = pd.to_datetime(miners_ravine["Date"], format="%m/%d/%Y")
+dry_creek["Date"] = pd.to_datetime(dry_creek["Date"], format="%m/%d/%Y")
 
     
 if selected_tab=="Overview":
