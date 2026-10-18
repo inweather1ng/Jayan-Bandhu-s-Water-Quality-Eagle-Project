@@ -411,14 +411,28 @@ if selected_tab=="Overview":
             "longitude":[-121.241526,-121.284156,-121.256444],
              "label": ["Miners Ravine", "Saugstad park","Confluence"],
              "fill":["green" if miners_status=="Healthy" else "red","green" if dry_status=="Healthy" else "red","green"],
-             "healthy":[miners_status,dry_status,""],
+             "health_status":[miners_status,dry_status,""],
              "Tab":[1,2,2]
          }
     )
     map=folium.Map(location=[38.74,-121.24],zoom_start=11)
-    # for idx,row in mapdata.iterrows():
-    #     folium.CircleMarker(location=[row["latitude"],row["longitude"]],popup=f"Click to view Site {row['label']} Data",fill=True,fill_color=row['fill'],tooltip=).add_to(map)
-    
+    for idx,row in mapdata.iterrows():
+        folium.CircleMarker(location=[row["latitude"],row["longitude"]],popup=f"Click to view Site {row['label']} Data",fill=True,fill_color=row['fill'],tooltip=f"{row['label']} status: {row['health_status']}").add_to(map)
+    map_out=st_folium(map,height=400,width=400)
+    if map_out.get("last_object_clicked"):
+        clicked_lat=map_out.get("last_object_clicked")['lat']
+        clicked_lon=map_out.get("last_object_clicked")['lng']
+        match=mapdata[abs(mapdata['latitude']-clicked_lat)<0.001].dropna()
+        if not match.empty:
+            st.session_state.active_tab=match.iloc[0]['Tab']
+            st.rerun()
+
+
+
+
+
+
+        
 
     
     
