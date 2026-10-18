@@ -32,8 +32,8 @@ st.markdown(
 """,
     unsafe_allow_html=True,
 )
-if "active_tab" not in st.session_state:
-    st.session_state.active_tab=0
+#if "active_tab" not in st.session_state:
+   # st.session_state.active_tab=0
 # --- Data Processing ---
 # Adjust filepath if necessary
 
@@ -158,8 +158,8 @@ miners_ravine = data[data["Site"] == "JBDC01"]
 dry_creek = data[data["Site"] == "JBDC02"]
 
 tab_names=["Overview","Dry creek","Miners Ravine", "Comparative analysis","Correlation analysis","PDF fownload","eDNA results","Simulation"]
-selected_tab=st.sidebar.radio("Select Tab",tab_names,index=st.session_state.active_tab)
-st.session_state.active_tab=tab_names.index(selected_tab)
+selected_tab=st.sidebar.radio("Select Tab",tab_names)
+#st.session_state.active_tab=tab_names.index(selected_tab)
 
     
 # if not data.empty 
