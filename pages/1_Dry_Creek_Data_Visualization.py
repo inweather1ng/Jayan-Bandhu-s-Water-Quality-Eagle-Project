@@ -193,7 +193,7 @@ High Thermal Stress: > 21.0°C (Significantly reduces oxygen-holding capacity)""
             st.write(f"Data report for {parameter} over a {len(finaldf[parameter])} month period for the {site} site")
             st.pyplot(fig3)
             st.space("small")
-            st.markdown(f"<b>Summary of values over a {y} Month Period</b>")
+            st.markdown(f"Summary of values over a {y} Month Period")
             st.dataframe(table_data)
             st.write(thresholdstr)
         # fig3.savefig(img_buffer,format="png")
