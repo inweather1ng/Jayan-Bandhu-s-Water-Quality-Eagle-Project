@@ -23,13 +23,16 @@ if "dry creek" not in st.session_state or "miners ravine" not in st.session_stat
         st.session_state['miners ravine']=mr
     except FileNotFoundError:
         st.info("Files are not on the computer.")
-st.header("About the Dry Creek Watershed")
-col1,col2=st.columns(2)
-
-with st.container():
+with st.container(border=True):
     st.write("Come to the Dry Creek Conservancy's Salmon homecoming November 8 for a live presentation of this Dashboard and more!")
     st.write("Event wil be held at Royer park")
     st.link_button(url="https://www.drycreekconservancy.org/events/",label="Sign up here")
+
+
+st.header("About the Dry Creek Watershed")
+col1,col2=st.columns(2)
+
+
     
 
 
