@@ -566,7 +566,7 @@ if selected_tab=="Overview":
 
 
 elif selected_tab=="Parameter deep dive":
-    if st.selectbox(label="Select a site",options=["Dry Creek at Saugstad","Miners Ravine at Orivetto Drive",key="deep_dive_site"])=="Dry Creek at Saugstad":
+    if st.selectbox(label="Select a site",options=["Dry Creek at Saugstad","Miners Ravine at Orivetto Drive"],key="deep_dive_site")=="Dry Creek at Saugstad":
         dry_creek.sort_values('Date')
         
         fig4=px.line(
