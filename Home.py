@@ -60,12 +60,12 @@ with st.container(border=True):
     
 
 st.header("\n\n\nData collection info")
-st.markdown(f"""Data being collected monthly from July 2026 onward. /n/n
-• All physiochemical and biological data is being collected under an official QAPP approved the California Water Boards. /n/n
-• Data uploaded to California Environmental Data Exchange network(CEDEN). /n/n
-• Clearance to proceed with project from city of Roseville. /n/n
-• Physiochemical data collected using state-grade equipment from the Sierra Streams Institute. /n/n
-• CDFW recommended eDNA sampling for New Zealand mudsnails. /n/n
+st.markdown(f"""Data being collected monthly from July 2026 onward. \n\n
+• All physiochemical and biological data is being collected under an official QAPP approved the California Water Boards. \n\n
+• Data uploaded to California Environmental Data Exchange network(CEDEN). \n\n
+• Clearance to proceed with project from city of Roseville. \n\n
+• Physiochemical data collected using state-grade equipment from the Sierra Streams Institute. \n\n
+• CDFW recommended eDNA sampling for New Zealand mudsnails. \n\n
 • Environmental DNA Partners are the UC Santa Cruz CALeDNA program for BMI and the Jonah Ventures for New Zealand Mudsnails """)
 
 
