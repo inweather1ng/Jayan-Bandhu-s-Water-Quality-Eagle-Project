@@ -60,7 +60,7 @@ def censor(message):
 # --- Helper Function for Plotly Interactive Shaded Threshold Zones ---
 def pdf_download(prompt,miners_ravine,dry_creek):
     params=["DO","SPC","Turbidity","PH","Water Temp"]
-    sites=["Miners Ravine","Dry Creek"]
+    sites=["Miners Ravine","Dry Creek","Secret Ravine"]
     parameter=""
     site=""
     for i in params:
@@ -78,7 +78,7 @@ def pdf_download(prompt,miners_ravine,dry_creek):
 
         text=[]
 
-        finaldf=miners_ravine.copy()if site == "Miners Ravine" else dry_creek.copy()
+        finaldf=miners_ravine.copy()if site == "Miners Ravine" else (secret_ravine.copy() if site == "Secret Ravine" else dry_creek.copy())
         finaldf=finaldf.sort_values("Date")
         pdf=io.BytesIO()
         doc = SimpleDocTemplate(pdf,pagesize=letter,rightMargin=40,leftMargin=10)
@@ -238,6 +238,7 @@ st.title("Dry Creek Water Quality Monitoring and Salmon Suitability Project")
 #             is_valid=True
 miners_ravine = data[data["Site"] == "JBDC01"]
 dry_creek = data[data["Site"] == "JBDC02"]
+secret_ravine = data[data["Site"]=="JBDC03"]
 
 tab_names=["Overview","Parameter deep dive", "Comparative analysis","Correlation analysis","PDF download","eDNA results","Feedback"]
 
@@ -253,6 +254,7 @@ selected_tab=st.sidebar.radio("Select Tab",tab_names,key="nav")
 
 miners_ravine["Date"] = pd.to_datetime(miners_ravine["Date"], format="%m/%d/%Y")
 dry_creek["Date"] = pd.to_datetime(dry_creek["Date"], format="%m/%d/%Y")
+secret_ravine["Date"] = pd.to_datetime(secret_ravine["Date"], format="%m/%d/%Y")
 
 def on_tab_change():
     tab=selection
@@ -483,6 +485,116 @@ if selected_tab=="Overview":
                 delta=temp_healthy,
                 delta_color=color
             )
+    st.space("small")
+    st.subheader("Secret Ravine")
+    
+    if not secret_ravine.empty:
+        latest_row = secret_ravine.iloc[-1]
+        latest_do = latest_row["DO"]
+        latest_cond = latest_row["SPC"]
+        latest_ph = latest_row["PH"]
+        latest_turbidity=latest_row["Turbidity"]
+        latest_temp=latest_row['Water Temp']
+
+        col1, col2, col3, col4,col5 = st.columns(5)
+        with col1:
+            do_healthy = (
+                "Healthy > 7 (mg/l)"
+                if latest_do >= 7
+                else (
+                    "Tolerable" if latest_do >= 5 and latest_do < 7 else "Stressed"
+                )
+            )
+            color = (
+                "normal"
+                if latest_do >= 7
+                else ("off" if latest_do >= 5 and latest_do < 7 else "inverse")
+            )
+            st.metric(
+                label="Dissolved Oxygen",
+                value=f"{latest_do} mg/L",
+                delta=do_healthy,
+                delta_color=color,
+            )
+
+        with col2:
+            cond_healthy = (
+                "Healthy <300 "
+                if latest_cond <= 300
+                else (
+                    "Moderate(300-500)"
+                    if latest_cond > 300 and latest_cond <= 500
+                    else "Stressed(>500)"
+                )
+            )
+            color2 = (
+                "normal"
+                if latest_cond <= 300
+                else (
+                    "off"
+                    if latest_cond > 300 and latest_cond <= 500
+                    else "inverse"
+                )
+            )
+            st.metric(
+                label="Conductivity",
+                value=f"{latest_cond} µS/cm",
+                delta=cond_healthy,
+                delta_color=color2,
+            )
+        with col3:
+            ph_healthy = (
+                "Normal: 6.5-8.5"
+                if latest_ph >= 6.5 and latest_ph<=8.5
+                else (
+                    "Alkali" if latest_ph >= 8.5  else "Acidic"
+                )
+            )
+            color = (
+                "normal"
+                if latest_ph >= 6.5 and latest_ph<=8.5
+                else "inverse"
+            )
+            st.metric(
+                label="PH",
+                value=f"{latest_ph}",
+                delta=ph_healthy,
+                delta_color=color,
+            )
+        with col4:
+            t_healthy = (
+                "Clear <10NTU"
+                if latest_turbidity <=10
+                else (
+                    "Cloudy" if latest_turbidity <= 50  else "Opaque"
+                )
+            )
+            color = (
+                "normal"
+                if latest_turbidity <= 10
+                else ("off" if latest_turbidity <= 50  else "inverse")
+            )
+            st.metric(
+                label="Turbidity",
+                value=f"{latest_turbidity} NTU",
+                delta=t_healthy,
+                delta_color=color,
+            )
+        with col5:
+            temp_healthy=(
+                "Healthy"
+                if  latest_temp<=18
+                else ("Warm" if latest_temp <= 21 else "Hot")
+            )
+            color=(
+                "normal"if latest_temp>=10 and latest_temp<=21 else"inverse"
+            )
+            st.metric(
+                label="Water temperature",
+                value=f"{latest_temp} degrees celsius",
+                delta=temp_healthy,
+                delta_color=color
+            )
     miners_lat=miners_ravine.iloc[-1]
     miners_ravine_health = miners_lat['DO']>7 and miners_lat['PH'] > 6.5 and miners_lat['PH']<8.5 and miners_lat['Turbidity']<10 and miners_lat['Water Temp']<20 and miners_lat["SPC"]<300
     dry_lat=dry_creek.iloc[-1]
@@ -505,7 +617,7 @@ if selected_tab=="Overview":
              "label": ["Miners Ravine", "Saugstad park","Confluence"],
              "fill":["green" if miners_status=="Healthy" else "red","green" if dry_status=="Healthy" else "red","gray"],
              "health_status":[miners_status,dry_status,"No data yet"],
-            "site":["Miners Ravine at Orivetto Drive","Dry Creek at Saugstad",""]
+            "site":["Miners Ravine at Orivetto Drive","Dry Creek at Saugstad","Secret Ravine near Confluence"]
          }
     )
     map=folium.Map(location=[38.75,-121.26],zoom_start=13)
@@ -566,13 +678,15 @@ if selected_tab=="Overview":
 
 
 elif selected_tab=="Parameter deep dive":
-    if st.selectbox(label="Select a site",options=["Dry Creek at Saugstad","Miners Ravine at Orivetto Drive"],key="deep_dive_site")=="Dry Creek at Saugstad":
-        dry_creek.sort_values('Date')
+    x = st.selectbox(label="Select a site",options=["Dry Creek at Saugstad","Miners Ravine at Orivetto Drive","Secret Ravine near Confluence"],key="deep_dive_site")=="Dry Creek at Saugstad":
+    site=dry_creek if x=="Dry Creek at Saugstad" else(miners_ravine if x=="Miners Ravine at Orivetto Drive" else secret_ravine)
+    site=site.copy()
+        site.sort_values('Date')
         
         fig4=px.line(
-            dry_creek,
-            x=dry_creek['Date'],
-            y=dry_creek['DO'],
+            site,
+            x=site['Date'],
+            y=site['DO'],
             markers=True,
             labels={"Date":"Date","DO":"DO"}
         )
@@ -590,7 +704,7 @@ elif selected_tab=="Parameter deep dive":
 
         ]
         )
-        chart=st.plotly_chart(fig4,use_container_width=True,selection_mode="points",key="Dry Creek DO",on_select='rerun')
+        chart=st.plotly_chart(fig4,use_container_width=True,selection_mode="points",key=f"{x} DO",on_select='rerun')
 
         if chart and chart.get('selection',{}).get('points'):
             point=chart['selection']['points'][0]
@@ -605,7 +719,7 @@ What it measures: The amount of gaseous oxygen dissolved in the water, essential
 
 Why it matters: As water temperature rises, its capacity to hold oxygen drops. Low DO indicates organic pollution, excessive algae decomposition, or stagnant water.
 
-Dry Creek Thresholds:
+Thresholds:
 
 Healthy: > 7.0 mg/L (Supports thriving aquatic life and salmonid requirements)
 
@@ -623,9 +737,9 @@ Critical / Hypoxia: < 5.0 mg/L (Causes severe stress or fish kills)
 
 
         fig5=px.line(
-            dry_creek,
-            x=dry_creek['Date'],
-            y=dry_creek['SPC'],
+            site,
+            x=site['Date'],
+            y=site['SPC'],
             markers=True,
             labels={"Date":"Date","SPC":"SPC"}
         )
@@ -643,7 +757,7 @@ Critical / Hypoxia: < 5.0 mg/L (Causes severe stress or fish kills)
 
         ]
         )
-        chart=st.plotly_chart(fig5,use_container_width=True,selection_mode="points",key="Dry Creek SPC",on_select="rerun")
+        chart=st.plotly_chart(fig5,use_container_width=True,selection_mode="points",key=f"{x} SPC",on_select="rerun")
 
         if chart and chart.get('selection',{}).get('points'):
             point=chart['selection']['points'][0]
@@ -658,7 +772,7 @@ What it measures: The ability of water to pass an electrical current, directly p
 
 Why it matters: High conductivity spikes during dry weather can indicate illicit discharges, failing septic systems, or excessive road salt/fertilizer wash.
 
-Dry Creek Thresholds:
+Thresholds:
 
 Natural Baseline: 100 to 300 µS/cm (Typical for Sierra foothill-fed valley streams)
 
@@ -676,9 +790,9 @@ Significant Runoff Pollution: > 500 µS/cm
 
         st.space("small")
         fig6=px.line(
-        dry_creek,
-        x=dry_creek['Date'],
-        y=dry_creek['PH'],
+        site,
+        x=site['Date'],
+        y=site['PH'],
         markers=True,
         labels={"Date":"Date","PH":"PH"}
         )
@@ -696,7 +810,7 @@ Significant Runoff Pollution: > 500 µS/cm
 
         ]
         )
-        chart=st.plotly_chart(fig6,use_container_width=True,selection_mode="points",key="Dry Creek PH",on_select="rerun")
+        chart=st.plotly_chart(fig6,use_container_width=True,selection_mode="points",key=f"{x} PH",on_select="rerun")
 
         if chart and chart.get('selection',{}).get('points'):
             point=chart['selection']['points'][0]
@@ -714,7 +828,7 @@ What it measures: The logarithmic measure of hydrogen ion concentration, indicat
 
 Why it matters: Extreme pH levels (too acidic or too basic) can release toxic heavy metals from sediments into the water column and damage fish gills.
 
-Dry Creek Thresholds:
+Thresholds:
 
 Healthy Basin Standard: 6.5 to 8.5 (Central Valley Regional Water Quality Control Board standard for inland surface waters)
 
@@ -732,9 +846,9 @@ Alkaline Warning: > 8.5
         st.space("small")
         
         fig7=px.line(
-        dry_creek,
-        x=dry_creek['Date'],
-        y=dry_creek['Turbidity'],
+        site,
+        x=site['Date'],
+        y=site['Turbidity'],
         markers=True,
         labels={"Date":"Date","Turbidity":"Turbidity"}
         )
@@ -752,7 +866,7 @@ Alkaline Warning: > 8.5
 
             ]
         )
-        chart=st.plotly_chart(fig7,use_container_width=True,selection_mode="points",key="Dry Creek Turbidity",on_select="rerun")
+        chart=st.plotly_chart(fig7,use_container_width=True,selection_mode="points",key="{x} Turbidity",on_select="rerun")
 
         if chart and chart.get('selection',{}).get('points'):
             point=chart['selection']['points'][0]
@@ -770,7 +884,7 @@ Alkaline Warning: > 8.5
 
 Why it matters: High turbidity blocks sunlight needed by aquatic plants and can clog fish gills or smother benthic macroinvertebrate habitats.
 
-Dry Creek Thresholds:
+Thresholds:
 
 Clear / Base Flow: < 10 NTU
 
@@ -787,9 +901,9 @@ Heavy Erosion / Storm Event: > 50 NTU
         st.space("small")
         
         fig=px.line(
-        dry_creek,
-        x=dry_creek['Date'],
-        y=dry_creek['Water Temp'],
+        site,
+        x=site['Date'],
+        y=site['Water Temp'],
         markers=True,
         labels={"Date":"Date","Water Temp":"Water Temp"}
         )
@@ -807,7 +921,7 @@ Heavy Erosion / Storm Event: > 50 NTU
 
             ]
         )
-        chart=st.plotly_chart(fig,use_container_width=True,selection_mode="points",key="Dry Creek Water Temperature",on_select="rerun")
+        chart=st.plotly_chart(fig,use_container_width=True,selection_mode="points",key=f"{x} Water Temperature",on_select="rerun")
 
         if chart and chart.get('selection',{}).get('points'):
             point=chart['selection']['points'][0]
@@ -825,7 +939,7 @@ What it measures: The thermal condition of the water body.
 
 Why it matters: Temperature controls metabolic rates in aquatic life and directly dictates Dissolved Oxygen saturation levels. Elevated temperatures often result from lack of riparian tree canopy or warm urban stormwater runoff.
 
-Dry Creek Thresholds:
+Thresholds:
 
 Optimal Coldwater Habitat: < 18.0°C (64.4°F)
 
@@ -842,263 +956,264 @@ High Thermal Stress: > 21.0°C (Significantly reduces oxygen-holding capacity)
 """,unsafe_allow_html=False)
         st.space("small")
         
-    else:
-        miners_ravine.sort_values('Date')
-        st.markdown("")
-        fig4=px.line(
-            miners_ravine,
-            x=miners_ravine['Date'],
-            y=miners_ravine['DO'],
-            markers=True,
-            labels={"Date":"Date","DO":"DO"}
-        )
-        fig4.update_traces(
-        line=dict(color="brown"),marker=dict(color="brown",size=8,symbol="circle")
+#     elif st.selectbox(label="Select a site",options=["Dry Creek at Saugstad","Miners Ravine at Orivetto Drive","Secret Ravine near Confluence"],key="deep_dive_site")=="Miners Ravine at Orivetto Drive":
+#         miners_ravine.sort_values('Date')
+#         st.markdown("")
+#         fig4=px.line(
+#             miners_ravine,
+#             x=miners_ravine['Date'],
+#             y=miners_ravine['DO'],
+#             markers=True,
+#             labels={"Date":"Date","DO":"DO"}
+#         )
+#         fig4.update_traces(
+#         line=dict(color="brown"),marker=dict(color="brown",size=8,symbol="circle")
 
-        )
-        fig4.update_layout(
-        yaxis_range=[0,10],
-        xaxis=dict(tickformat="%m/%d/%Y"),
-        shapes=[
-            dict(xref="paper",yref="y",x0=0,x1=1,y0=0,y1=5,fillcolor="red",opacity=0.5,layer="below",line_width=0),
-            dict(xref="paper",yref="y",x0=0,x1=1,y0=5,y1=7,fillcolor="yellow",opacity=0.5,layer="below",line_width=0),
-            dict(xref="paper",yref="y",x0=0,x1=1,y0=7,y1=10,fillcolor="green",opacity=0.5,layer="below",line_width=0)
+#         )
+#         fig4.update_layout(
+#         yaxis_range=[0,10],
+#         xaxis=dict(tickformat="%m/%d/%Y"),
+#         shapes=[
+#             dict(xref="paper",yref="y",x0=0,x1=1,y0=0,y1=5,fillcolor="red",opacity=0.5,layer="below",line_width=0),
+#             dict(xref="paper",yref="y",x0=0,x1=1,y0=5,y1=7,fillcolor="yellow",opacity=0.5,layer="below",line_width=0),
+#             dict(xref="paper",yref="y",x0=0,x1=1,y0=7,y1=10,fillcolor="green",opacity=0.5,layer="below",line_width=0)
 
-        ]
-        )
-        chart=st.plotly_chart(fig4,use_container_width=True,selection_mode="points",key="Miners Ravine DO",on_select="rerun")
+#         ]
+#         )
+#         chart=st.plotly_chart(fig4,use_container_width=True,selection_mode="points",key="Miners Ravine DO",on_select="rerun")
 
-        if chart and chart.get('selection',{}).get('points'):
-            point=chart['selection']['points'][0]
-            if point.get('y')<7:
-                do_healthy="stressed"
-            else:
-                do_healthy="healthy"
-            st.info(f"Date: {point.get('x')} Dissolved Oxygen level: {point.get('y')}, {do_healthy}")
-        st.markdown("""**DO**
+#         if chart and chart.get('selection',{}).get('points'):
+#             point=chart['selection']['points'][0]
+#             if point.get('y')<7:
+#                 do_healthy="stressed"
+#             else:
+#                 do_healthy="healthy"
+#             st.info(f"Date: {point.get('x')} Dissolved Oxygen level: {point.get('y')}, {do_healthy}")
+#         st.markdown("""**DO**
 
-What it measures: The amount of gaseous oxygen dissolved in the water, essential for fish and aquatic organisms to breathe.
+# What it measures: The amount of gaseous oxygen dissolved in the water, essential for fish and aquatic organisms to breathe.
 
-Why it matters: As water temperature rises, its capacity to hold oxygen drops. Low DO indicates organic pollution, excessive algae decomposition, or stagnant water.
+# Why it matters: As water temperature rises, its capacity to hold oxygen drops. Low DO indicates organic pollution, excessive algae decomposition, or stagnant water.
 
-Miners Ravine Thresholds:
+# Miners Ravine Thresholds:
 
-Healthy: > 7.0 mg/L (Supports thriving aquatic life and salmonid requirements)
+# Healthy: > 7.0 mg/L (Supports thriving aquatic life and salmonid requirements)
 
-Moderate Stress: 5.0 to 7.0 mg/L
+# Moderate Stress: 5.0 to 7.0 mg/L
 
-Critical / Hypoxia: < 5.0 mg/L (Causes severe stress or fish kills)
-
-
-
-""",unsafe_allow_html=False)
-
-        st.space("small")
-        fig5=px.line(
-            miners_ravine,
-            x=miners_ravine['Date'],
-            y=miners_ravine['SPC'],
-            markers=True,
-            labels={"Date":"Date","SPC":"SPC"}
-        )
-        fig5.update_traces(
-        line=dict(color="brown"),marker=dict(color="green",size=8,symbol="circle")
-
-        )
-        fig5.update_layout(
-        yaxis_range=[0,600],
-        xaxis=dict(tickformat="%m/%d/%Y"),
-        shapes=[
-            dict(xref="paper",yref="y",x0=0,x1=1,y0=0,y1=300,fillcolor="green",opacity=0.5,layer="below",line_width=0),
-            dict(xref="paper",yref="y",x0=0,x1=1,y0=300,y1=500,fillcolor="yellow",opacity=0.5,layer="below",line_width=0),
-            dict(xref="paper",yref="y",x0=0,x1=1,y0=500,y1=600,fillcolor="red",opacity=0.5,layer="below",line_width=0)
-
-        ]
-        )
-        chart=st.plotly_chart(fig5,use_container_width=True,selection_mode="points",key="Miners Ravine SPC",on_select="rerun")
-
-        if chart and chart.get('selection',{}).get('points'):
-            point=chart['selection']['points'][0]
-            if point.get('y')>300:
-                spc_healthy="High"
-            else:
-                spc_healthy="Healthy"
-            st.info(f"Date: {point.get('x')} Conductivity level: {point.get('y')}, {spc_healthy}")
-        st.markdown("""**Conductivity**
-
-What it measures: The ability of water to pass an electrical current, directly proportional to the concentration of dissolved ions (salts, minerals, and urban runoff pollutants).
-
-Why it matters: High conductivity spikes during dry weather can indicate illicit discharges, failing septic systems, or excessive road salt/fertilizer wash.
-
-Miners Ravine Thresholds:
-
-Natural Baseline: 100 to 300 µS/cm (Typical for Sierra foothill-fed valley streams)
-
-Elevated Urban Impact: 300 to 500 µS/cm
-
-Significant Runoff Pollution: > 500 µS/cm
+# Critical / Hypoxia: < 5.0 mg/L (Causes severe stress or fish kills)
 
 
 
+# """,unsafe_allow_html=False)
 
-""",unsafe_allow_html=False)
+#         st.space("small")
+#         fig5=px.line(
+#             miners_ravine,
+#             x=miners_ravine['Date'],
+#             y=miners_ravine['SPC'],
+#             markers=True,
+#             labels={"Date":"Date","SPC":"SPC"}
+#         )
+#         fig5.update_traces(
+#         line=dict(color="brown"),marker=dict(color="green",size=8,symbol="circle")
+
+#         )
+#         fig5.update_layout(
+#         yaxis_range=[0,600],
+#         xaxis=dict(tickformat="%m/%d/%Y"),
+#         shapes=[
+#             dict(xref="paper",yref="y",x0=0,x1=1,y0=0,y1=300,fillcolor="green",opacity=0.5,layer="below",line_width=0),
+#             dict(xref="paper",yref="y",x0=0,x1=1,y0=300,y1=500,fillcolor="yellow",opacity=0.5,layer="below",line_width=0),
+#             dict(xref="paper",yref="y",x0=0,x1=1,y0=500,y1=600,fillcolor="red",opacity=0.5,layer="below",line_width=0)
+
+#         ]
+#         )
+#         chart=st.plotly_chart(fig5,use_container_width=True,selection_mode="points",key="Miners Ravine SPC",on_select="rerun")
+
+#         if chart and chart.get('selection',{}).get('points'):
+#             point=chart['selection']['points'][0]
+#             if point.get('y')>300:
+#                 spc_healthy="High"
+#             else:
+#                 spc_healthy="Healthy"
+#             st.info(f"Date: {point.get('x')} Conductivity level: {point.get('y')}, {spc_healthy}")
+#         st.markdown("""**Conductivity**
+
+# What it measures: The ability of water to pass an electrical current, directly proportional to the concentration of dissolved ions (salts, minerals, and urban runoff pollutants).
+
+# Why it matters: High conductivity spikes during dry weather can indicate illicit discharges, failing septic systems, or excessive road salt/fertilizer wash.
+
+# Miners Ravine Thresholds:
+
+# Natural Baseline: 100 to 300 µS/cm (Typical for Sierra foothill-fed valley streams)
+
+# Elevated Urban Impact: 300 to 500 µS/cm
+
+# Significant Runoff Pollution: > 500 µS/cm
+
+
+
+
+# """,unsafe_allow_html=False)
         
-        st.space("small")
-        fig6=px.line(
-        miners_ravine,
-        x=miners_ravine['Date'],
-        y=miners_ravine['PH'],
-        markers=True,
-        labels={"Date":"Date","PH":"PH"}
-        )
-        fig6.update_traces(
-        line=dict(color="brown"),marker=dict(color="brown",size=8,symbol="circle")
+#         st.space("small")
+#         fig6=px.line(
+#         miners_ravine,
+#         x=miners_ravine['Date'],
+#         y=miners_ravine['PH'],
+#         markers=True,
+#         labels={"Date":"Date","PH":"PH"}
+#         )
+#         fig6.update_traces(
+#         line=dict(color="brown"),marker=dict(color="brown",size=8,symbol="circle")
 
-        )
-        fig6.update_layout(
-        yaxis_range=[4,10],
-        xaxis=dict(tickformat="%m/%d/%Y"),
-        shapes=[
-            dict(xref="paper",yref="y",x0=0,x1=1,y0=4,y1=6.5,fillcolor="red",opacity=0.5,layer="below",line_width=0),
-            dict(xref="paper",yref="y",x0=0,x1=1,y0=6.5,y1=8.5,fillcolor="green",opacity=0.5,layer="below",line_width=0),
-            dict(xref="paper",yref="y",x0=0,x1=1,y0=8.5,y1=10,fillcolor="red",opacity=0.5,layer="below",line_width=0)
+#         )
+#         fig6.update_layout(
+#         yaxis_range=[4,10],
+#         xaxis=dict(tickformat="%m/%d/%Y"),
+#         shapes=[
+#             dict(xref="paper",yref="y",x0=0,x1=1,y0=4,y1=6.5,fillcolor="red",opacity=0.5,layer="below",line_width=0),
+#             dict(xref="paper",yref="y",x0=0,x1=1,y0=6.5,y1=8.5,fillcolor="green",opacity=0.5,layer="below",line_width=0),
+#             dict(xref="paper",yref="y",x0=0,x1=1,y0=8.5,y1=10,fillcolor="red",opacity=0.5,layer="below",line_width=0)
 
-        ]
-        )
-        chart=st.plotly_chart(fig6,use_container_width=True,selection_mode="points",key="Miners Ravine PH",on_select="rerun")
+#         ]
+#         )
+#         chart=st.plotly_chart(fig6,use_container_width=True,selection_mode="points",key="Miners Ravine PH",on_select="rerun")
 
-        if chart and chart.get('selection',{}).get('points'):
-            point=chart['selection']['points'][0]
-            if point.get('y')<6.5:
-                ph_healthy="acidic"
+#         if chart and chart.get('selection',{}).get('points'):
+#             point=chart['selection']['points'][0]
+#             if point.get('y')<6.5:
+#                 ph_healthy="acidic"
         
-            elif point.get('y')>8.5:
-                ph_healthy="Alkali"
-            else:
-                ph_healthy="healthy"
-            st.info(f"Date: {point.get('x')} PH: {point.get('y')}, {ph_healthy}")
-        st.markdown("""**PH**
+#             elif point.get('y')>8.5:
+#                 ph_healthy="Alkali"
+#             else:
+#                 ph_healthy="healthy"
+#             st.info(f"Date: {point.get('x')} PH: {point.get('y')}, {ph_healthy}")
+#         st.markdown("""**PH**
 
-What it measures: The logarithmic measure of hydrogen ion concentration, indicating how acidic or basic the water is on a scale of 0 to 14.
+# What it measures: The logarithmic measure of hydrogen ion concentration, indicating how acidic or basic the water is on a scale of 0 to 14.
 
-Why it matters: Extreme pH levels (too acidic or too basic) can release toxic heavy metals from sediments into the water column and damage fish gills.
+# Why it matters: Extreme pH levels (too acidic or too basic) can release toxic heavy metals from sediments into the water column and damage fish gills.
 
-Miners Ravine Thresholds:
+# Miners Ravine Thresholds:
 
-Healthy Basin Standard: 6.5 to 8.5 (Central Valley Regional Water Quality Control Board standard for inland surface waters)
+# Healthy Basin Standard: 6.5 to 8.5 (Central Valley Regional Water Quality Control Board standard for inland surface waters)
 
-Acidic Warning: < 6.5
+# Acidic Warning: < 6.5
 
-Alkaline Warning: > 8.5
-
-
+# Alkaline Warning: > 8.5
 
 
-""",unsafe_allow_html=False)
-        st.space("small")
-        fig7=px.line(
-        miners_ravine,
-        x=miners_ravine['Date'],
-        y=miners_ravine['Turbidity'],
-        markers=True,
-        labels={"Date":"Date","Turbidity":"Turbidity"}
-        )
-        fig7.update_traces(
-        line=dict(color="brown"),marker=dict(color="brown",size=8,symbol="circle")
 
-        )
-        fig7.update_layout(
-        yaxis_range=[0,100],
-        xaxis=dict(tickformat="%m/%d/%Y"),
-            shapes=[
-                dict(xref="paper",yref="y",x0=0,x1=1,y0=0,y1=10,fillcolor="green",opacity=0.5,layer="below",line_width=0),
-                dict(xref="paper",yref="y",x0=0,x1=1,y0=10,y1=50,fillcolor="yellow",opacity=0.5,layer="below",line_width=0),
-                dict(xref="paper",yref="y",x0=0,x1=1,y0=50,y1=100,fillcolor="red",opacity=0.5,layer="below",line_width=0)
 
-            ]
-        )
-        chart=st.plotly_chart(fig7,use_container_width=True,selection_mode="points",key="Miners Ravine Turbidity",on_select="rerun")
+# """,unsafe_allow_html=False)
+#         st.space("small")
+#         fig7=px.line(
+#         miners_ravine,
+#         x=miners_ravine['Date'],
+#         y=miners_ravine['Turbidity'],
+#         markers=True,
+#         labels={"Date":"Date","Turbidity":"Turbidity"}
+#         )
+#         fig7.update_traces(
+#         line=dict(color="brown"),marker=dict(color="brown",size=8,symbol="circle")
 
-        if chart and chart.get('selection',{}).get('points'):
-            point=chart['selection']['points'][0]
-            if point.get('y')>50:
-                turb_healthy="Turbid"
+#         )
+#         fig7.update_layout(
+#         yaxis_range=[0,100],
+#         xaxis=dict(tickformat="%m/%d/%Y"),
+#             shapes=[
+#                 dict(xref="paper",yref="y",x0=0,x1=1,y0=0,y1=10,fillcolor="green",opacity=0.5,layer="below",line_width=0),
+#                 dict(xref="paper",yref="y",x0=0,x1=1,y0=10,y1=50,fillcolor="yellow",opacity=0.5,layer="below",line_width=0),
+#                 dict(xref="paper",yref="y",x0=0,x1=1,y0=50,y1=100,fillcolor="red",opacity=0.5,layer="below",line_width=0)
+
+#             ]
+#         )
+#         chart=st.plotly_chart(fig7,use_container_width=True,selection_mode="points",key="Miners Ravine Turbidity",on_select="rerun")
+
+#         if chart and chart.get('selection',{}).get('points'):
+#             point=chart['selection']['points'][0]
+#             if point.get('y')>50:
+#                 turb_healthy="Turbid"
         
-            elif point.get('y')>10:
-                turb_healthy="medium"
-            else:
-                turb_healthy="healthy"
-            st.info(f"Date: {point.get('x')} Turbidity: {point.get('y')}, {turb_healthy}")
-        st.markdown("""**Turbidity**
+#             elif point.get('y')>10:
+#                 turb_healthy="medium"
+#             else:
+#                 turb_healthy="healthy"
+#             st.info(f"Date: {point.get('x')} Turbidity: {point.get('y')}, {turb_healthy}")
+#         st.markdown("""**Turbidity**
 
-What it measures:* Water clarity and the amount of suspended sediments (soil, silt, organic matter, and microscopic organisms) scattering light.
+# What it measures:* Water clarity and the amount of suspended sediments (soil, silt, organic matter, and microscopic organisms) scattering light.
 
-Why it matters: High turbidity blocks sunlight needed by aquatic plants and can clog fish gills or smother benthic macroinvertebrate habitats.
+# Why it matters: High turbidity blocks sunlight needed by aquatic plants and can clog fish gills or smother benthic macroinvertebrate habitats.
 
-Miners Ravine Thresholds:
+# Miners Ravine Thresholds:
 
-Clear / Base Flow: < 10 NTU
+# Clear / Base Flow: < 10 NTU
 
-Moderate Runoff / Storm Impact: 10 to 50 NTU
+# Moderate Runoff / Storm Impact: 10 to 50 NTU
 
-Heavy Erosion / Storm Event: > 50 NTU
+# Heavy Erosion / Storm Event: > 50 NTU
 
 
 
-""",unsafe_allow_html=False)
-        st.space("small")
-        fig=px.line(
-        miners_ravine,
-        x=miners_ravine['Date'],
-        y=miners_ravine['Water Temp'],
-        markers=True,
-        labels={"Date":"Date","Water Temp":"Water Temp"}
-        )
-        fig.update_traces(
-        line=dict(color="brown"),marker=dict(color="brown",size=8,symbol="circle")
+# """,unsafe_allow_html=False)
+#         st.space("small")
+#         fig=px.line(
+#         miners_ravine,
+#         x=miners_ravine['Date'],
+#         y=miners_ravine['Water Temp'],
+#         markers=True,
+#         labels={"Date":"Date","Water Temp":"Water Temp"}
+#         )
+#         fig.update_traces(
+#         line=dict(color="brown"),marker=dict(color="brown",size=8,symbol="circle")
 
-        )
-        fig.update_layout(
-            yaxis_range=[10,30],
-            xaxis=dict(tickformat="%m/%d/%Y"),
-            shapes=[
-                dict(xref="paper",yref="y",x0=0,x1=1,y0=10,y1=20,fillcolor="green",opacity=0.5,layer="below",line_width=0),
-                dict(xref="paper",yref="y",x0=0,x1=1,y0=20,y1=25,fillcolor="yellow",opacity=0.5,layer="below",line_width=0),
-                dict(xref="paper",yref="y",x0=0,x1=1,y0=25,y1=30,fillcolor="red",opacity=0.5,layer="below",line_width=0)
+#         )
+#         fig.update_layout(
+#             yaxis_range=[10,30],
+#             xaxis=dict(tickformat="%m/%d/%Y"),
+#             shapes=[
+#                 dict(xref="paper",yref="y",x0=0,x1=1,y0=10,y1=20,fillcolor="green",opacity=0.5,layer="below",line_width=0),
+#                 dict(xref="paper",yref="y",x0=0,x1=1,y0=20,y1=25,fillcolor="yellow",opacity=0.5,layer="below",line_width=0),
+#                 dict(xref="paper",yref="y",x0=0,x1=1,y0=25,y1=30,fillcolor="red",opacity=0.5,layer="below",line_width=0)
 
-            ]
-        )
-        chart=st.plotly_chart(fig,use_container_width=True,selection_mode="points",key="Dry Creek Water Temperature",on_select="rerun")
+#             ]
+#         )
+#         chart=st.plotly_chart(fig,use_container_width=True,selection_mode="points",key="Dry Creek Water Temperature",on_select="rerun")
 
-        if chart and chart.get('selection',{}).get('points'):
-            point=chart['selection']['points'][0]
-            if point.get('y')>25:
-                temp_healthy="Too warm for cold water species"
+#         if chart and chart.get('selection',{}).get('points'):
+#             point=chart['selection']['points'][0]
+#             if point.get('y')>25:
+#                 temp_healthy="Too warm for cold water species"
         
-            elif point.get('y')>20:
-                temp_healthy="Warmer than normal"
-            else:
-                temp_healthy="Healthy"
-            st.info(f"Date: {point.get('x')} Water Temperature: {point.get('y')}, {temp_healthy}")
-        st.markdown("""**Water Temperature**
+#             elif point.get('y')>20:
+#                 temp_healthy="Warmer than normal"
+#             else:
+#                 temp_healthy="Healthy"
+#             st.info(f"Date: {point.get('x')} Water Temperature: {point.get('y')}, {temp_healthy}")
+#         st.markdown("""**Water Temperature**
 
-What it measures: The thermal condition of the water body.
+# What it measures: The thermal condition of the water body.
 
-Why it matters: Temperature controls metabolic rates in aquatic life and directly dictates Dissolved Oxygen saturation levels. Elevated temperatures often result from lack of riparian tree canopy or warm urban stormwater runoff.
+# Why it matters: Temperature controls metabolic rates in aquatic life and directly dictates Dissolved Oxygen saturation levels. Elevated temperatures often result from lack of riparian tree canopy or warm urban stormwater runoff.
 
-Miners Ravine Thresholds:
+# Miners Ravine Thresholds:
 
-Optimal Coldwater Habitat: < 18.0°C (64.4°F)
+# Optimal Coldwater Habitat: < 18.0°C (64.4°F)
 
-Elevated Stress Zone: 18.0°C – 21.0°C
+# Elevated Stress Zone: 18.0°C – 21.0°C
 
-High Thermal Stress: > 21.0°C (Significantly reduces oxygen-holding capacity)
-
-
+# High Thermal Stress: > 21.0°C (Significantly reduces oxygen-holding capacity)
 
 
-""",unsafe_allow_html=False)
-        st.space("small")
+
+
+# """,unsafe_allow_html=False)
+#         st.space("small")
+
 
     
 
