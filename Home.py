@@ -31,7 +31,7 @@ with col1:
 with col2:
     st.write("The Dry creek stretches across 101 square miles through Placer and Sacramento counties. Native Fall-run Chinook Salmon and threatened Central Valley Steelhead Trout return to spawn. ")
 
-st.link_button(url="drycreekconservancy.org",label="Learn more about the Dry Creek Conservancy)")
+st.link_button(url="https://drycreekconservancy.org",label="Learn more about the Dry Creek Conservancy)")
 
 
 
