@@ -200,7 +200,7 @@ High Thermal Stress: > 21.0°C (Significantly reduces oxygen-holding capacity)""
 data=pd.read_csv("Waterquality.csv")
 reqcols=["DO","SPC","Turbidity","Water Temp","PH","Site"]
 # --- Main Layout ---
-st.title("Dry Creek Water Quality Monitoring and Salmon Habitat Suitability )
+st.title("Dry Creek Water Quality Monitoring and Salmon Habitat Suitability")
 # upload=(st.file_uploader(label="Enter your data here",type="csv"))
 # time.sleep(5)
 # is_valid=None
