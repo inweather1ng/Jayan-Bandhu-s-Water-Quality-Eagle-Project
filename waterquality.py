@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 st.set_page_config(page_title="Smart Watershed Monitoring Assistant for creek data visualization",layout="wide")
-st.title("A Water Quality monitoring Dasboard and Visualizing tool for Volunteers and organizaitons alike.")
+st.title("A Water Quality monitoring Dasboard and Visualizing tool for Volunteers and organizations alike.")
 st.write("Choose which page you want to explore using the sidebar")
 if "dry creek" not in st.session_state or "miners ravine" not in st.session_state:
     try:
