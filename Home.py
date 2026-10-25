@@ -15,10 +15,13 @@ if "dry creek" not in st.session_state or "miners ravine" not in st.session_stat
         data=pd.read_csv("Waterquality.csv")
         mr = data[data["Site"] == "JBDC01"]
         dc = data[data["Site"] == "JBDC02"]
+        sc = data[data["Site"]=="JBDC03"]
         mr["Date"] = pd.to_datetime(mr["Date"], format="%m/%d/%Y",errors="coerce")
         dc["Date"] = pd.to_datetime(dc["Date"], format="%m/%d/%Y",errors="coerce")
+        sc["date] = pd.to_datetime(sc["Date"], format="%m/%d/%Y",errors="coerce")
         mr=mr.sort_values('Date')
         dc=dc.sort_values('Date')
+        sc=sc.sort_values('Date')
         st.session_state['dry creek']=dc
         st.session_state['miners ravine']=mr
     except FileNotFoundError:
@@ -60,7 +63,7 @@ with st.container(border=True):
     
 
 st.header("\n\n\nData collection info")
-st.markdown(f"""Data being collected monthly from July 2026 onward. \n\n
+st.markdown(f"""Data being collected monthly from July 2026 onward. (Site 3 recently added October 2026) \n\n
 • All physiochemical and biological data is being collected under an official QAPP approved the California Water Boards. \n\n
 • Data uploaded to California Environmental Data Exchange network(CEDEN). \n\n
 • Clearance to proceed with project from city of Roseville. \n\n
