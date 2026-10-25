@@ -5,6 +5,8 @@ seaborn
 folium
 streamlit-folium
 reportlab
-
+plotly
+alt-profanity-check
+scikit-learn
 
 
