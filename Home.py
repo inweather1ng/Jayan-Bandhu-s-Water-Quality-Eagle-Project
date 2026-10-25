@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 st.set_page_config(page_title="Do the Salmon like my creek?",layout="wide",page_icon="🐟")
 st.title("Do the Salmon like my creek?")
-st.header("A Water Quality and Environmental DNA(eDNA) Data Visualization and Analysis Tool.\n")
+st.header("A Water Quality and Environmental DNA (eDNA) Data Visualization and Analysis Tool.\n")
 
 
 
@@ -62,8 +62,8 @@ with st.container(border=True):
 st.header("\n\n\nData collection info")
 st.markdown(f"""Data being collected monthly from July 2026 onward. (Site 3 recently added October 2026) \n\n
 • All physiochemical and biological data is being collected under an official QAPP approved the State Water Boards. \n\n
-• Data uploaded to California Environmental Data Exchange network(CEDEN). \n\n
-• Clearance to proceed with project from city of Roseville. """
+• Data uploaded to California Environmental Data Exchange network (CEDEN). \n\n
+• Clearance for water quality monitoring project obtained from the city of Roseville. """
 )
 
 
