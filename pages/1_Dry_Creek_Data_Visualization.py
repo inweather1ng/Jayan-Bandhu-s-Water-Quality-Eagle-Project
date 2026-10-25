@@ -505,7 +505,7 @@ if selected_tab=="Overview":
              "label": ["Miners Ravine", "Saugstad park","Confluence"],
              "fill":["green" if miners_status=="Healthy" else "red","green" if dry_status=="Healthy" else "red","gray"],
              "health_status":[miners_status,dry_status,"No data yet"],
-            "site":["Dry Creek at Saugstad","Miners Ravine at Orivetto Drive",""]
+            "site":["Miners Ravine at Orivetto Drive","Dry Creek at Saugstad",""]
          }
     )
     map=folium.Map(location=[38.75,-121.26],zoom_start=13)
