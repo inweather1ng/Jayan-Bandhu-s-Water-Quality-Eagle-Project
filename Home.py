@@ -48,10 +48,13 @@ with col2:
     st.write("The Dry creek stretches across 101 square miles through Placer and Sacramento counties. Native Fall-run Chinook Salmon and threatened Central Valley Steelhead Trout return to spawn. ")
 
 st.link_button(url="https://drycreekconservancy.org",label="Learn more about the Dry Creek Conservancy)")
-
-
+year=mr.iloc[-1]["Date"].dt.year
+year-=1
+with st.container(border=True):
+    st.subheader(f"For {year}, the Dry Creek Conservancy counted 254 Salmon, The highest since 2014")
+    
 
 st.header("\n\n\nData collection info")
-st.markdown("{len(mr)} Months of data have been collected. All physiochemical and biological data is being collected under an official QAPP with guidance from the California Water Boards. Physichemical data collected using state-grade equipment from the Sierra Streams Institute. ")
+st.markdown(f"{len(mr)} Months of data have been collected. All physiochemical and biological data is being collected under an official QAPP with guidance from the California Water Boards. Physichemical data collected using state-grade equipment from the Sierra Streams Institute. ")
 
 
