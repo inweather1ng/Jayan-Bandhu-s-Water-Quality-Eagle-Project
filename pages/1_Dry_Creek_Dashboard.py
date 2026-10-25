@@ -240,7 +240,10 @@ miners_ravine = data[data["Site"] == "JBDC01"]
 dry_creek = data[data["Site"] == "JBDC02"]
 
 tab_names=["Overview","Parameter deep dive", "Comparative analysis","Correlation analysis","PDF download","eDNA results","Feedback"]
-selected_tab=st.sidebar.radio("Select Tab",tab_names)
+
+if "jump_to" in st.session_state:
+    st.session_state.nav=st.session_state.pop("jump_to")
+selected_tab=st.sidebar.radio("Select Tab",tab_names,key="nav")
 #st.session_state.active_tab=tab_names.index(selected_tab)
 
     
@@ -500,23 +503,23 @@ if selected_tab=="Overview":
             "latitude": [38.752945,38.742738,38.759216],
             "longitude":[-121.241526,-121.284156,-121.256444],
              "label": ["Miners Ravine", "Saugstad park","Confluence"],
-             "fill":["green" if miners_status=="Healthy" else "red","green" if dry_status=="Healthy" else "red","green"],
-             "health_status":[miners_status,dry_status,""],
-             "Tab":[1,2,2]
+             "fill":["green" if miners_status=="Healthy" else "red","green" if dry_status=="Healthy" else "red","gray"],
+             "health_status":[miners_status,dry_status,"No data yet"],
+            "site":["Dry Creek at Saugstad","Miners Ravine at Orivetto Drive",""]
          }
     )
-    map=folium.Map(location=[38.74,-121.24],zoom_start=11)
+    map=folium.Map(location=[38.75,-121.26],zoom_start=13)
     for idx,row in mapdata.iterrows():
-        folium.CircleMarker(location=[row["latitude"],row["longitude"]],popup=f"For the {row['label']} site",fill=True,fill_color=row['fill'],tooltip=f"{row['label']} status: {row['health_status']}").add_to(map)
-    map_out=st_folium(map,height=400,width=400)
-    if map_out.get("last_object_clicked"):
-        clicked_lat=map_out.get("last_object_clicked")['lat']
-        clicked_lon=map_out.get("last_object_clicked")['lng']
+        folium.CircleMarker(location=[row["latitude"],row["longitude"]],popup=f"Click on this point to navigate to the {row['label']} site's deep dive page",color=row['fill'],fill=True,fill_color=row['fill'],tooltip=f"{row['label']} status: {row['health_status']},fill_opacity=0.8").add_to(map)
+    map_out=st_folium(map,height=400,width=700)
+    if map_out and  map_out.get("last_object_clicked"):
+        clicked_lat=map_out["last_object_clicked"]['lat']
         match=mapdata[abs(mapdata['latitude']-clicked_lat)<0.001].dropna()
-        if not match.empty:
-            st.session_state.active_tab=match.iloc[0]['Tab']
+        if not match.empty and match.iloc[0]["site"]:
+            st.session_state.jump_to("Parameter deep dive")
+            st.session_state.deep_dive_site = match.iloc[0]["site"]
             st.rerun()
-    st.caption("This map shows the three monitoring sites of this project in the form of blue circles.")
+    st.caption("Click a sampling site to see its charts. Green = latest sample healthy, red = something needs attention, gray = reference point (not sampled).")
 
 
 
@@ -563,7 +566,7 @@ if selected_tab=="Overview":
 
 
 elif selected_tab=="Parameter deep dive":
-    if st.selectbox(label="Select a site",options=["Dry Creek at Saugstad","Miners Ravine at Orivetto Drive"])=="Dry Creek at Saugstad":
+    if st.selectbox(label="Select a site",options=["Dry Creek at Saugstad","Miners Ravine at Orivetto Drive",key="deep_dive_site"])=="Dry Creek at Saugstad":
         dry_creek.sort_values('Date')
         
         fig4=px.line(
