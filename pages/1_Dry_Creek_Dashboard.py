@@ -89,7 +89,7 @@ def pdf_download(prompt,miners_ravine,dry_creek):
             if parameter=="DO":
                 status="healthy" if val>7 else "unhealthy"
             elif parameter=="SPC":
-                status="healthy" if val<200 else "unhealthy"
+                status="healthy" if val<300 else "unhealthy"
             elif parameter=="PH":
                 status="healthy" if val>6.5 and val<8.5 else "unhealthy"
             elif parameter=="Turbidity":
@@ -297,20 +297,20 @@ if selected_tab=="Overview":
 
         with col2:
             cond_healthy = (
-            "Healthy <150 "
-                if latest_cond <= 150
+            "Healthy <300 "
+                if latest_cond <= 300
                 else (
-                    "Moderate(150-500)"
-                    if latest_cond > 150 and latest_cond <= 500
+                    "Moderate(300-500)"
+                    if latest_cond > 300 and latest_cond <= 500
                     else "Stressed(>500)"
                 )
             )
             color2 = (
                 "normal"
-                if latest_cond <= 150
+                if latest_cond <= 300
                 else (
                     "off"
-                    if latest_cond > 150 and latest_cond <= 500
+                    if latest_cond > 300 and latest_cond <= 500
                     else "inverse"
                 )
             )
@@ -407,20 +407,20 @@ if selected_tab=="Overview":
 
         with col2:
             cond_healthy = (
-                "Healthy <150 "
-                if latest_cond <= 150
+                "Healthy <300 "
+                if latest_cond <= 300
                 else (
-                    "Moderate(150-500)"
-                    if latest_cond > 150 and latest_cond <= 500
+                    "Moderate(300-500)"
+                    if latest_cond > 300 and latest_cond <= 500
                     else "Stressed(>500)"
                 )
             )
             color2 = (
                 "normal"
-                if latest_cond <= 150
+                if latest_cond <= 300
                 else (
                     "off"
-                    if latest_cond > 150 and latest_cond <= 500
+                    if latest_cond > 300 and latest_cond <= 500
                     else "inverse"
                 )
             )
@@ -470,9 +470,9 @@ if selected_tab=="Overview":
             )
         with col5:
             temp_healthy=(
-                "Sustainable"
-                if latest_temp>=10 and latest_temp<=20
-                else("Hot" if latest_temp>20 else "cold")
+                "Healthy"
+                if  latest_temp<=18
+                else ("Warm" if latest_temp <= 21 else "Hot")
             )
             color=(
                 "normal"if latest_temp>=10 and latest_temp<=21 else"inverse"
@@ -484,9 +484,9 @@ if selected_tab=="Overview":
                 delta_color=color
             )
     miners_lat=miners_ravine.iloc[-1]
-    miners_ravine_health = miners_lat['DO']>7 and miners_lat['PH'] > 6.5 and miners_lat['PH']<8.5 and miners_lat['Turbidity']<10 and miners_lat['Water Temp']<20 and miners_lat["SPC"]<200
+    miners_ravine_health = miners_lat['DO']>7 and miners_lat['PH'] > 6.5 and miners_lat['PH']<8.5 and miners_lat['Turbidity']<10 and miners_lat['Water Temp']<20 and miners_lat["SPC"]<300
     dry_lat=dry_creek.iloc[-1]
-    dry_creek_health = dry_lat['DO']>7 and dry_lat['PH'] > 6.5 and dry_lat['PH']<8.5 and dry_lat['Turbidity']<10 and dry_lat['Water Temp']<20 and dry_lat["SPC"]<200
+    dry_creek_health = dry_lat['DO']>7 and dry_lat['PH'] > 6.5 and dry_lat['PH']<8.5 and dry_lat['Turbidity']<10 and dry_lat['Water Temp']<20 and dry_lat["SPC"]<300
     if miners_ravine_health:
         miners_status = "Healthy"
     else:
@@ -634,12 +634,12 @@ Critical / Hypoxia: < 5.0 mg/L (Causes severe stress or fish kills)
 
         )
         fig5.update_layout(
-        yaxis_range=[0,500],
+        yaxis_range=[0,600],
         xaxis=dict(tickformat="%m/%d/%Y"),
         shapes=[
-            dict(xref="paper",yref="y",x0=0,x1=1,y0=0,y1=200,fillcolor="green",opacity=0.5,layer="below",line_width=0),
-            dict(xref="paper",yref="y",x0=0,x1=1,y0=200,y1=300,fillcolor="yellow",opacity=0.5,layer="below",line_width=0),
-            dict(xref="paper",yref="y",x0=0,x1=1,y0=300,y1=500,fillcolor="red",opacity=0.5,layer="below",line_width=0)
+            dict(xref="paper",yref="y",x0=0,x1=1,y0=0,y1=300,fillcolor="green",opacity=0.5,layer="below",line_width=0),
+            dict(xref="paper",yref="y",x0=0,x1=1,y0=300,y1=500,fillcolor="yellow",opacity=0.5,layer="below",line_width=0),
+            dict(xref="paper",yref="y",x0=0,x1=1,y0=500,y1=600,fillcolor="red",opacity=0.5,layer="below",line_width=0)
 
         ]
         )
@@ -906,12 +906,12 @@ Critical / Hypoxia: < 5.0 mg/L (Causes severe stress or fish kills)
 
         )
         fig5.update_layout(
-        yaxis_range=[0,500],
+        yaxis_range=[0,600],
         xaxis=dict(tickformat="%m/%d/%Y"),
         shapes=[
-            dict(xref="paper",yref="y",x0=0,x1=1,y0=0,y1=200,fillcolor="green",opacity=0.5,layer="below",line_width=0),
-            dict(xref="paper",yref="y",x0=0,x1=1,y0=200,y1=300,fillcolor="yellow",opacity=0.5,layer="below",line_width=0),
-            dict(xref="paper",yref="y",x0=0,x1=1,y0=300,y1=500,fillcolor="red",opacity=0.5,layer="below",line_width=0)
+            dict(xref="paper",yref="y",x0=0,x1=1,y0=0,y1=300,fillcolor="green",opacity=0.5,layer="below",line_width=0),
+            dict(xref="paper",yref="y",x0=0,x1=1,y0=300,y1=500,fillcolor="yellow",opacity=0.5,layer="below",line_width=0),
+            dict(xref="paper",yref="y",x0=0,x1=1,y0=500,y1=600,fillcolor="red",opacity=0.5,layer="below",line_width=0)
 
         ]
         )
