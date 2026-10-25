@@ -53,7 +53,7 @@ with col1:
 with col2:
     st.write("The Dry creek stretches across 101 square miles through Placer and Sacramento counties. Native Fall-run Chinook Salmon and threatened Central Valley Steelhead Trout return to spawn. ")
 
-st.link_button(url="https://drycreekconservancy.org",label="Learn more about the Dry Creek Conservancy)")
+st.link_button(url="https://drycreekconservancy.org",label="Learn more about the Dry Creek Conservancy")
 year=mr.iloc[-1]["Date"].year
 year-=1
 with st.container(border=True):
@@ -61,12 +61,12 @@ with st.container(border=True):
     
 
 st.header("\n\n\nData collection info")
-st.markdown(f"""Data being collected monthly from July 2026 onward. 
-• All physiochemical and biological data is being collected under an official QAPP approved the California Water Boards. 
-• Data uploaded to California Environmental Data Exchange network(CEDEN). 
-• Clearance to proceed with project from city of Roseville. 
-• Physiochemical data collected using state-grade equipment from the Sierra Streams Institute. 
-• CDFW recommended eDNA sampling for New Zealand mudsnails. 
+st.markdown(f"""Data being collected monthly from July 2026 onward. /n
+• All physiochemical and biological data is being collected under an official QAPP approved the California Water Boards. /n
+• Data uploaded to California Environmental Data Exchange network(CEDEN). /n
+• Clearance to proceed with project from city of Roseville. /n
+• Physiochemical data collected using state-grade equipment from the Sierra Streams Institute. /n
+• CDFW recommended eDNA sampling for New Zealand mudsnails. /n
 • Environmental DNA Partners are the UC Santa Cruz CALeDNA program for BMI and the Jonah Ventures for New Zealand Mudsnails """)
 
 
