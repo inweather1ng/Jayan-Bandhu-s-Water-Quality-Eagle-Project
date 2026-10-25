@@ -1,12 +1,9 @@
 import streamlit as st
 import pandas as pd
-st.set_page_config(page_title="How is my Creek Doing?",layout="wide",page_icon="🐟")
-st.title("How is My Creek Doing?")
+st.set_page_config(page_title="Do the Salmon like my creek?",layout="wide",page_icon="🐟")
+st.title("Do the Salmon like my creek?")
 st.header("A Water Quality/Salmon Habitat Suitability Data Visualization and Analysis Tool\n")
 
-
-
-st.write("You can view a water quality dashboard of the Dry Creek, and then Visualize your own data files as well (coming soon)!")
 
 
 
@@ -54,7 +51,7 @@ with col1:
     
     
 with col2:
-    st.write("The Dry creek stretches across 101 square miles through Placer and Sacramento counties. Native Fall-run Chinook Salmon and threatened Central Valley Steelhead Trout return to spawn. ")
+    st.write("The Dry creek watershed stretches across 101 square miles through Placer and Sacramento counties. Native Fall-run Chinook Salmon and threatened Central Valley Steelhead Trout return to spawn. ")
 
 st.link_button(url="https://drycreekconservancy.org",label="Learn more about the Dry Creek Conservancy")
 
@@ -64,7 +61,7 @@ with st.container(border=True):
 
 st.header("\n\n\nData collection info")
 st.markdown(f"""Data being collected monthly from July 2026 onward. (Site 3 recently added October 2026) \n\n
-• All physiochemical and biological data is being collected under an official QAPP approved the California Water Boards. \n\n
+• All physiochemical and biological data is being collected under an official QAPP approved the State Water Boards. \n\n
 • Data uploaded to California Environmental Data Exchange network(CEDEN). \n\n
 • Clearance to proceed with project from city of Roseville. """
 )
