@@ -997,7 +997,7 @@ elif selected_tab=="Comparative analysis":
             for idx,val in enumerate(dodiff):
                 if abs(val)>1:
                     txt="lower" if val<1 else "higher"
-                    st.info(f"""There is a significant difference in DO from Miners Ravine to dry creek, miners ravine's do is {abs(round(val),2)} {txt} during
+                    st.info(f"""There is a significant difference in DO from Miners Ravine to dry creek, miners ravine's do is {abs(round(val,2))} {txt} during
                     {miners_ravine['Date'].iloc[idx].month_name()}""")
                 elif abs(val) > 0.5:
                     st.info(f"There is a slight difference in DO values during {miners_ravine['Date'].iloc[idx].month_name}, keep looking out for bigger changes") 
