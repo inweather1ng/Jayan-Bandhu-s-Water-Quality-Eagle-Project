@@ -994,13 +994,13 @@ elif selected_tab=="Comparative analysis":
             ax.axhspan(6,7,color="yellow")
             ax.axhspan(7,10,color="green")
             dodiff = [miners_ravine.iloc[n]['DO']-dry_creek.iloc[n]['DO'] for n in range(len(miners_ravine))]
-            for val in dodiff:
+            for idx,val in enumerate(dodiff):
                 if abs(val)>1:
                     txt="lower" if val<1 else "higher"
                     st.info(f"""There is a significant difference in DO from Miners Ravine to dry creek, miners ravine's do is {abs(val)} {txt} during
-                    {miners_ravine['Date'].iloc[dodiff.index(val)].month_name()}""")
+                    {miners_ravine['Date'].iloc[idx].month_name()}""")
                 elif abs(val) > 0.5:
-                    st.info(f"There is a slight difference in DO values during {miners_ravine['Date'][dodiff.index(val)].dt.month_name}, keep looking out for bigger changes") 
+                    st.info(f"There is a slight difference in DO values during {miners_ravine['Date'].iloc[idx].month_name}, keep looking out for bigger changes") 
         else:
             ax.set_ylim(3,9)
             ax1.set_ylim(3,9)
