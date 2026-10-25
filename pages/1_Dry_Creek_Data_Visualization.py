@@ -1001,7 +1001,7 @@ elif selected_tab=="Comparative analysis":
                     {miners_ravine['Date'].iloc[idx].month_name()}""")
                 elif abs(val) > 0.5:
                     st.info(f"There is a slight difference in DO values during {miners_ravine['Date'].iloc[idx].month_name}, keep looking out for bigger changes") 
-        else
+        else:
             ax.set_ylim(3,9)
             ax1.set_ylim(3,9)
             ax.axhspan(3,6.5,color="red")
