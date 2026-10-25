@@ -7,6 +7,9 @@ st.header("A Water Quality/Salmon Habitat Suitability Data Visualization and Ana
 
 
 st.write("You can view a water quality dashboard of the Dry Creek, and then Visualize your own data files as well (coming soon)!")
+
+
+
 if "dry creek" not in st.session_state or "miners ravine" not in st.session_state:
     try:
         data=pd.read_csv("Waterquality.csv")
@@ -22,6 +25,16 @@ if "dry creek" not in st.session_state or "miners ravine" not in st.session_stat
         st.info("Files are not on the computer.")
 st.header("About the Dry Creek Watershed")
 col1,col2=st.columns(2)
+
+with st.container():
+    st.write("Come to the Dry Creek Conservancy's Salmon homecoming November 8 for a live presentation of this Dashboard and more!")
+    st.write("Event wil be held at Royer park")
+    st.link_button("https://www.drycreekconservancy.org/events/",label="Sign up here")
+    
+
+
+
+    
 with col1:
     st.image("dccwatershed.png",caption="Map of the dry creek watershed, image courtesy of Dry creek Conservancy",use_container_width=True)
 
@@ -36,6 +49,6 @@ st.link_button(url="https://drycreekconservancy.org",label="Learn more about the
 
 
 st.header("\n\n\nData collection info")
-st.markdown("All physiochemical and biological data is being collected under an official QAPP with guidance from the California Water Boards. Physichemical data collected using state-grade equipment from the Sierra Streams Institute. ")
+st.markdown("{len(mr)} Months of data have been collected. All physiochemical and biological data is being collected under an official QAPP with guidance from the California Water Boards. Physichemical data collected using state-grade equipment from the Sierra Streams Institute. ")
 
 
