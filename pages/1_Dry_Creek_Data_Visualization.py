@@ -614,7 +614,7 @@ if selected_tab=="Overview":
     else:
         sr_status="Stressed"
     # st.title("Dry creek water quality monitoring Site map")
-    st.header("This is a map of our three sampling sites along the Dry Creek Watershed.")\
+    st.header("This is a map of our three sampling sites along the Dry Creek Watershed.")
     st.write("Click on a point to view data by parameter for that site")
     mapdata=pd.DataFrame(
         {
