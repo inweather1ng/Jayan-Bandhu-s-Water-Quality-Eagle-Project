@@ -127,7 +127,7 @@ def pdf_download(prompt,miners_ravine,dry_creek):
         
             
 
-        fig3,ax3=plt.subplots(figsize=(6,6))
+        fig3,ax3=plt.subplots(figsize=(4,4))
         sns.lineplot(data=finaldf,x="Date",y=parameter,marker="o")
         ax3.tick_params(axis='x',labelsize=6)
         ax3.set_title(f"Data report for {parameter} over a {len(finaldf[parameter])} month period for the {site} site")
@@ -190,7 +190,12 @@ High Thermal Stress: > 21.0°C (Significantly reduces oxygen-holding capacity)""
         if st.button(label="View Preview"):
             b=not b
         if(b):
+            st.write(f"Data report for {parameter} over a {len(finaldf[parameter])} month period for the {site} site")
             st.pyplot(fig3)
+            st.space("small")
+            st.markdown(f"<b>Summary of values over a {y} Month Period</b>")
+            st.dataframe(table_data)
+            st.write(thresholdstr)
         # fig3.savefig(img_buffer,format="png")
 
 
