@@ -87,15 +87,15 @@ def pdf_download(prompt,miners_ravine,dry_creek):
             date_str = row['Date']
             val=row[parameter]
             if parameter=="DO":
-                status="healthy" if val>7 else "unhealthy"
+                status="healthy" if val>7 else "suboptimal"
             elif parameter=="SPC":
-                status="healthy" if val<300 else "unhealthy"
+                status="healthy" if val<300 else "suboptimal"
             elif parameter=="PH":
-                status="healthy" if val>6.5 and val<8.5 else "unhealthy"
+                status="healthy" if val>6.5 and val<8.5 else "suboptimal"
             elif parameter=="Turbidity":
-                status="healthy" if val<10 else "unhealthy"
+                status="healthy" if val<10 else "suboptimal"
             else:
-                status="healthy" if val>10 and val<20 else "unhealthy"
+                status="healthy" if val>10 and val<20 else "suboptimal"
             table_data.append([date_str,val,status])
         avgval = finaldf[parameter].mean()
         minvl = finaldf[parameter].min()
@@ -260,9 +260,8 @@ def on_tab_change():
     tab=selection
     st.session_state.active_tab=tab_names.index(tab)
 if selected_tab=="Overview":
-    st.header(f"Water Quality Dashboard and Salmon Sustainability Monitor for the Dry Creek Watershed")
     st.space(size="small")
-    st.markdown("""This project is a monthly Water Quality monitoring project of the Dry Creek watershed. We are monitoring 5 different physiochemical parameters and 2 eDNA parameters. 
+    st.markdown("""Most recent water quality data for the Dry Creek watershed. Monitoring includes 5 different physiochemical parameters and 2 eDNA parameters. 
     **Our physiochemical parameters are**: Dissolved Oxygen(DO), Conductivity(SPC), Turbidity, Water temperature, and pH.""")
     st.markdown("Our eDNA parameters we sample for are Benthic macroinvertebrates and New Zealand Mudsnails ")
     
@@ -1193,8 +1192,8 @@ elif selected_tab=="eDNA results":
     st.space("large")
     st.dataframe(data={"eDNA type:":["NZMS","BMI"],"Lab Partner":["Jonah Ventures Laboratory"," UCSC CaleDNA Program"]})
 elif selected_tab=="Feedback":
-    st.header("Feedback Portal")
-    st.write("Enter feedback as to how this dashboard can be improved!")
+    st.header("Feedback or Question Portal")
+    st.write("Enter feedback as to how this dashboard can be improved or questions that are stuck in your head!")
     with st.form(key="Form",clear_on_submit=True):
         message=st.text_area(label="Enter Your message!")
         submit=st.form_submit_button(label="Submit Feedback")
