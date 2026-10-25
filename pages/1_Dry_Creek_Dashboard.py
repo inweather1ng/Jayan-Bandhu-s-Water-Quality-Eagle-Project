@@ -516,7 +516,7 @@ if selected_tab=="Overview":
         clicked_lat=map_out["last_object_clicked"]['lat']
         match=mapdata[abs(mapdata['latitude']-clicked_lat)<0.001].dropna()
         if not match.empty and match.iloc[0]["site"]:
-            st.session_state.jump_to("Parameter deep dive")
+            st.session_state.jump_to="Parameter deep dive"
             st.session_state.deep_dive_site = match.iloc[0]["site"]
             st.rerun()
     st.caption("Click a sampling site to see its charts. Green = latest sample healthy, red = something needs attention, gray = reference point (not sampled).")
