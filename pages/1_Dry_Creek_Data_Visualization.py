@@ -678,7 +678,7 @@ if selected_tab=="Overview":
 
 
 elif selected_tab=="Parameter deep dive":
-    x = st.selectbox(label="Select a site",options=["Dry Creek at Saugstad","Miners Ravine at Orivetto Drive","Secret Ravine near Confluence"],key="deep_dive_site")=="Dry Creek at Saugstad":
+    x = st.selectbox(label="Select a site",options=["Dry Creek at Saugstad","Miners Ravine at Orivetto Drive","Secret Ravine near Confluence"],key="deep_dive_site")
     site=dry_creek if x=="Dry Creek at Saugstad" else(miners_ravine if x=="Miners Ravine at Orivetto Drive" else secret_ravine)
     site=site.copy()
         site.sort_values('Date')
