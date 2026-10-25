@@ -681,39 +681,39 @@ elif selected_tab=="Parameter deep dive":
     x = st.selectbox(label="Select a site",options=["Dry Creek at Saugstad","Miners Ravine at Orivetto Drive","Secret Ravine near Confluence"],key="deep_dive_site")
     site=dry_creek if x=="Dry Creek at Saugstad" else(miners_ravine if x=="Miners Ravine at Orivetto Drive" else secret_ravine)
     site=site.copy()
-        site.sort_values('Date')
+    site.sort_values('Date')
         
-        fig4=px.line(
+    fig4=px.line(
             site,
             x=site['Date'],
             y=site['DO'],
             markers=True,
             labels={"Date":"Date","DO":"DO"}
         )
-        fig4.update_traces(
-        line=dict(color="brown"),marker=dict(color="brown",size=8,symbol="circle")
+    fig4.update_traces(
+    line=dict(color="brown"),marker=dict(color="brown",size=8,symbol="circle")
 
         )
-        fig4.update_layout(
-        yaxis_range=[4,10],
-        xaxis=dict(tickformat="%m/%d/%Y"),
-        shapes=[
+    fig4.update_layout(
+    yaxis_range=[4,10],
+    xaxis=dict(tickformat="%m/%d/%Y"),
+    shapes=[
             dict(xref="paper",yref="y",x0=0,x1=1,y0=4,y1=5,fillcolor="red",opacity=0.5,layer="below",line_width=0),
             dict(xref="paper",yref="y",x0=0,x1=1,y0=5,y1=7,fillcolor="yellow",opacity=0.5,layer="below",line_width=0),
             dict(xref="paper",yref="y",x0=0,x1=1,y0=7,y1=10,fillcolor="green",opacity=0.5,layer="below",line_width=0)
 
         ]
         )
-        chart=st.plotly_chart(fig4,use_container_width=True,selection_mode="points",key=f"{x} DO",on_select='rerun')
+    chart=st.plotly_chart(fig4,use_container_width=True,selection_mode="points",key=f"{x} DO",on_select='rerun')
 
-        if chart and chart.get('selection',{}).get('points'):
-            point=chart['selection']['points'][0]
-            if point.get('y')<7:
-                do_healthy="stressed"
-            else:
-                do_healthy="healthy"
-            st.info(f"Date: {point.get('x')}, Dissolved Oxygen level: {point.get('y')}, {do_healthy}")
-        st.markdown("""**Dissolved Oxygen**
+    if chart and chart.get('selection',{}).get('points'):
+        point=chart['selection']['points'][0]
+        if point.get('y')<7:
+            do_healthy="stressed"
+        else:
+            do_healthy="healthy"
+        st.info(f"Date: {point.get('x')}, Dissolved Oxygen level: {point.get('y')}, {do_healthy}")
+    st.markdown("""**Dissolved Oxygen**
 
 What it measures: The amount of gaseous oxygen dissolved in the water, essential for fish and aquatic organisms to breathe.
 
@@ -732,41 +732,41 @@ Critical / Hypoxia: < 5.0 mg/L (Causes severe stress or fish kills)
 
 
 """)
-        st.space("small")
+    st.space("small")
         
 
 
-        fig5=px.line(
+    fig5=px.line(
             site,
             x=site['Date'],
             y=site['SPC'],
             markers=True,
             labels={"Date":"Date","SPC":"SPC"}
         )
-        fig5.update_traces(
-        line=dict(color="brown"),marker=dict(color="green",size=8,symbol="circle")
+    fig5.update_traces(
+    line=dict(color="brown"),marker=dict(color="green",size=8,symbol="circle")
 
         )
-        fig5.update_layout(
-        yaxis_range=[0,600],
-        xaxis=dict(tickformat="%m/%d/%Y"),
-        shapes=[
+    fig5.update_layout(
+    yaxis_range=[0,600],
+    xaxis=dict(tickformat="%m/%d/%Y"),
+    shapes=[
             dict(xref="paper",yref="y",x0=0,x1=1,y0=0,y1=300,fillcolor="green",opacity=0.5,layer="below",line_width=0),
             dict(xref="paper",yref="y",x0=0,x1=1,y0=300,y1=500,fillcolor="yellow",opacity=0.5,layer="below",line_width=0),
             dict(xref="paper",yref="y",x0=0,x1=1,y0=500,y1=600,fillcolor="red",opacity=0.5,layer="below",line_width=0)
 
         ]
         )
-        chart=st.plotly_chart(fig5,use_container_width=True,selection_mode="points",key=f"{x} SPC",on_select="rerun")
+    chart=st.plotly_chart(fig5,use_container_width=True,selection_mode="points",key=f"{x} SPC",on_select="rerun")
 
-        if chart and chart.get('selection',{}).get('points'):
-            point=chart['selection']['points'][0]
-            if point.get('y')>300:
-                spc_healthy="High"
-            else:
-                spc_healthy="Healthy"
-            st.info(f"Date: {point.get('x')}, Conductivity level: {point.get('y')}, {spc_healthy}")
-        st.markdown("""**Electrical Conductivity or Specific Conductance**
+    if chart and chart.get('selection',{}).get('points'):
+        point=chart['selection']['points'][0]
+        if point.get('y')>300:
+            spc_healthy="High"
+        else:
+            spc_healthy="Healthy"
+        st.info(f"Date: {point.get('x')}, Conductivity level: {point.get('y')}, {spc_healthy}")
+    st.markdown("""**Electrical Conductivity or Specific Conductance**
     
 What it measures: The ability of water to pass an electrical current, directly proportional to the concentration of dissolved ions (salts, minerals, and urban runoff pollutants).
 
@@ -785,44 +785,44 @@ Significant Runoff Pollution: > 500 µS/cm
 
 
 """,unsafe_allow_html=False)
-        st.space("small")
+    st.space("small")
         
 
-        st.space("small")
-        fig6=px.line(
-        site,
-        x=site['Date'],
-        y=site['PH'],
-        markers=True,
-        labels={"Date":"Date","PH":"PH"}
+    st.space("small")
+    fig6=px.line(
+    site,
+    x=site['Date'],
+    y=site['PH'],
+    markers=True,
+    labels={"Date":"Date","PH":"PH"}
         )
-        fig6.update_traces(
-        line=dict(color="brown"),marker=dict(color="brown",size=8,symbol="circle")
+    fig6.update_traces(
+    line=dict(color="brown"),marker=dict(color="brown",size=8,symbol="circle")
 
         )
-        fig6.update_layout(
-        yaxis_range=[4,10],
-        xaxis=dict(tickformat="%m/%d/%Y"),
-        shapes=[
+    fig6.update_layout(
+    yaxis_range=[4,10],
+    xaxis=dict(tickformat="%m/%d/%Y"),
+    shapes=[
             dict(xref="paper",yref="y",x0=0,x1=1,y0=4,y1=6.5,fillcolor="red",opacity=0.5,layer="below",line_width=0),
             dict(xref="paper",yref="y",x0=0,x1=1,y0=6.5,y1=8.5,fillcolor="green",opacity=0.5,layer="below",line_width=0),
             dict(xref="paper",yref="y",x0=0,x1=1,y0=8.5,y1=10,fillcolor="red",opacity=0.5,layer="below",line_width=0)
 
         ]
         )
-        chart=st.plotly_chart(fig6,use_container_width=True,selection_mode="points",key=f"{x} PH",on_select="rerun")
+    chart=st.plotly_chart(fig6,use_container_width=True,selection_mode="points",key=f"{x} PH",on_select="rerun")
 
-        if chart and chart.get('selection',{}).get('points'):
-            point=chart['selection']['points'][0]
-            if point.get('y')<6.5:
-                ph_healthy="acidic"
+    if chart and chart.get('selection',{}).get('points'):
+        point=chart['selection']['points'][0]
+        if point.get('y')<6.5:
+            ph_healthy="acidic"
         
-            elif point.get('y')>8.5:
-                ph_healthy="Alkali"
-            else:
-                ph_healthy="healthy"
-            st.info(f"Date: {point.get('x')} PH: {point.get('y')}, {ph_healthy}")
-        st.markdown("""**PH: **
+        elif point.get('y')>8.5:
+            ph_healthy="Alkali"
+        else:
+            ph_healthy="healthy"
+        st.info(f"Date: {point.get('x')} PH: {point.get('y')}, {ph_healthy}")
+    st.markdown("""**PH: **
 
 What it measures: The logarithmic measure of hydrogen ion concentration, indicating how acidic or basic the water is on a scale of 0 to 14.
 
@@ -843,42 +843,42 @@ Alkaline Warning: > 8.5
 
 
 """,unsafe_allow_html=False)
-        st.space("small")
+    st.space("small")
         
-        fig7=px.line(
+    fig7=px.line(
         site,
         x=site['Date'],
         y=site['Turbidity'],
         markers=True,
         labels={"Date":"Date","Turbidity":"Turbidity"}
         )
-        fig7.update_traces(
-        line=dict(color="brown"),marker=dict(color="brown",size=8,symbol="circle")
+    fig7.update_traces(
+    line=dict(color="brown"),marker=dict(color="brown",size=8,symbol="circle")
 
         )
-        fig7.update_layout(
-        yaxis_range=[0,100],
-        xaxis=dict(tickformat="%m/%d/%Y"),
-            shapes=[
+    fig7.update_layout(
+    yaxis_range=[0,100],
+    xaxis=dict(tickformat="%m/%d/%Y"),
+        shapes=[
                 dict(xref="paper",yref="y",x0=0,x1=1,y0=0,y1=10,fillcolor="green",opacity=0.5,layer="below",line_width=0),
                 dict(xref="paper",yref="y",x0=0,x1=1,y0=10,y1=50,fillcolor="yellow",opacity=0.5,layer="below",line_width=0),
                 dict(xref="paper",yref="y",x0=0,x1=1,y0=50,y1=100,fillcolor="red",opacity=0.5,layer="below",line_width=0)
 
             ]
         )
-        chart=st.plotly_chart(fig7,use_container_width=True,selection_mode="points",key="{x} Turbidity",on_select="rerun")
+    chart=st.plotly_chart(fig7,use_container_width=True,selection_mode="points",key="{x} Turbidity",on_select="rerun")
 
-        if chart and chart.get('selection',{}).get('points'):
-            point=chart['selection']['points'][0]
-            if point.get('y')>50:
-                turb_healthy="Turbid"
+    if chart and chart.get('selection',{}).get('points'):
+        point=chart['selection']['points'][0]
+        if point.get('y')>50:
+            turb_healthy="Turbid"
         
-            elif point.get('y')>10:
-                turb_healthy="medium"
-            else:
-                turb_healthy="healthy"
-            st.info(f"Date: {point.get('x')} Turbidity: {point.get('y')}, {turb_healthy}")
-        st.markdown("""**Turbidity**
+        elif point.get('y')>10:
+            turb_healthy="medium"
+        else:
+            turb_healthy="healthy"
+        st.info(f"Date: {point.get('x')} Turbidity: {point.get('y')}, {turb_healthy}")
+    st.markdown("""**Turbidity**
 
 *What it measures:* Water clarity and the amount of suspended sediments (soil, silt, organic matter, and microscopic organisms) scattering light.
 
@@ -898,20 +898,20 @@ Heavy Erosion / Storm Event: > 50 NTU
 
 
 """,unsafe_allow_html=False)
-        st.space("small")
+    st.space("small")
         
-        fig=px.line(
-        site,
-        x=site['Date'],
-        y=site['Water Temp'],
-        markers=True,
-        labels={"Date":"Date","Water Temp":"Water Temp"}
-        )
-        fig.update_traces(
-        line=dict(color="brown"),marker=dict(color="brown",size=8,symbol="circle")
+    fig=px.line(
+    site,
+    x=site['Date'],
+    y=site['Water Temp'],
+    markers=True,
+    labels={"Date":"Date","Water Temp":"Water Temp"}
+    )
+    fig.update_traces(
+    line=dict(color="brown"),marker=dict(color="brown",size=8,symbol="circle")
 
         )
-        fig.update_layout(
+    fig.update_layout(
             yaxis_range=[10,30],
             xaxis=dict(tickformat="%m/%d/%Y"),
             shapes=[
@@ -921,19 +921,19 @@ Heavy Erosion / Storm Event: > 50 NTU
 
             ]
         )
-        chart=st.plotly_chart(fig,use_container_width=True,selection_mode="points",key=f"{x} Water Temperature",on_select="rerun")
+    chart=st.plotly_chart(fig,use_container_width=True,selection_mode="points",key=f"{x} Water Temperature",on_select="rerun")
 
-        if chart and chart.get('selection',{}).get('points'):
-            point=chart['selection']['points'][0]
-            if point.get('y')>25:
-                temp_healthy="Too warm for cold water species"
+    if chart and chart.get('selection',{}).get('points'):
+        point=chart['selection']['points'][0]
+        if point.get('y')>25:
+            temp_healthy="Too warm for cold water species"
         
-            elif point.get('y')>20:
-                temp_healthy="Warmer than normal"
-            else:
-                temp_healthy="Healthy"
-            st.info(f"Date: {point.get('x')} Water Temperature: {point.get('y')}, {temp_healthy}")
-        st.markdown("""**Water Temperature**
+        elif point.get('y')>20:
+            temp_healthy="Warmer than normal"
+        else:
+            temp_healthy="Healthy"
+        st.info(f"Date: {point.get('x')} Water Temperature: {point.get('y')}, {temp_healthy}")
+    st.markdown("""**Water Temperature**
 
 What it measures: The thermal condition of the water body.
 
