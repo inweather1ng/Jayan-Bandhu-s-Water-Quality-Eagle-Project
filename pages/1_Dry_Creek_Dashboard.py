@@ -259,7 +259,7 @@ if selected_tab=="Overview":
     st.space(size="small")
     st.markdown("""This project is a monthly Water Quality monitoring project of the Dry Creek watershed. We are monitoring 5 different physiochemical parameters and 2 eDNA parameters. " \
     **Our physiochemical parameters are**: Dissolved Oxygen(DO), Conductivity(SPC), Turbidity, Water temperature, and PH.""")
-    st.markdown("Our eDNA parameters we smaple for are Benthic macroinvertebrates and New Zealand Mudsnails ")
+    st.markdown("Our eDNA parameters we sample for are Benthic macroinvertebrates and New Zealand Mudsnails ")
 
     
     st.subheader("Miners Ravine")
@@ -1303,7 +1303,7 @@ elif selected_tab=="eDNA results":
         )
     with col2:
         st.metric(
-            label="New Zealand Mudsnail Samples, Semptember 2026",
+            label="New Zealand Mudsnail Samples, September 2026",
             value="0 Replications Detected",
             delta="No change",
             delta_color="normal"
@@ -1311,7 +1311,7 @@ elif selected_tab=="eDNA results":
     st.header("Benthic Macroinvertebrates (BMI)")
     st.write("Sampling technique used: Metabarcoding")
     st.markdown("**Significance** BMI are bottom-dwelling aquatic insects and organisms whose community diversity and pollution tolerance serve as key biological indicators of stream health.")
-    st.metric(label="BMI Samples",value="In Proccess")
+    st.metric(label="BMI Samples",value="In Process")
     st.space("large")
     st.dataframe(data={"eDNA type:":["NZMS","BMI"],"Lab Partner":["Jonah Ventures Laboratory"," UCSC CaleDNA Program"]})
 elif selected_tab=="Feedback":
