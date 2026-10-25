@@ -1327,25 +1327,25 @@ elif selected_tab=="Feedback":
                 if censor(message)==-1:
                     st.error("Message was flagged")
                 else:
-                    st.success("submitted!")
+                    
                     try:
-                        st.write("starting")
+                        
                         msg = EmailMessage()
                         display="Anonymous community member"
                         msg.set_content(f"From {display}: \n\n {message}")
-                        st.write("set content")
+                        
                         user_email = st.secrets['EMAIL_USER']
                         user_pass=st.secrets['USER_PASS']
                         adress=st.secrets['EMAIL']
-                        st.write("retrieved email")
+                        s
                         msg['From']=user_email
                         msg['To']=adress
                         print("set up path")
                         with smtplib.SMTP_SSL('smtp.gmail.com',465) as smtp:
                             smtp.login(user_email,user_pass)
-                            st.write("sending")
+                            
                             smtp.send_message(msg)
-                        st.success("Registered")
+                        st.success("Submitted and Registered")
                     except Exception as e:
                         print(f"Encountered {e} while sending message")
 
