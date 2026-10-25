@@ -1,6 +1,7 @@
 import matplotlib.dates as mdates
 import matplotlib
 import pandas as pd
+import streamlit.components.v1 as components
 import streamlit as st
 import matplotlib.pyplot as plt
 import io
@@ -16,6 +17,7 @@ import plotly.express as px
 import smtplib
 from email.message import EmailMessage
 from profanity_check import predict,predict_prob
+
 
 qpcr=pd.read_csv("QPCR.csv")
 st.markdown(
@@ -641,6 +643,7 @@ if selected_tab=="Overview":
         if not match.empty and match.iloc[0]["site"]:
             st.session_state.jump_to="Parameter deep dive"
             st.session_state.deep_dive_site = match.iloc[0]["site"]
+            st.session_state.scroll_to_top = True
             st.rerun()
     st.caption("Click a sampling site to see its charts. Green = latest sample healthy, red = something needs attention, gray = reference point (not sampled).")
 
@@ -690,6 +693,12 @@ if selected_tab=="Overview":
 
 elif selected_tab=="Parameter deep dive":
     x = st.selectbox(label="Select a site",options=["Dry Creek at Saugstad","Miners Ravine at Orivetto Drive","Secret Ravine near Confluence"],key="deep_dive_site")
+    if st.session_state.pop("deep_dive_site",False):
+        components.html("""<script>
+        const main = window.parent.document.querySelector(['data-testid="stMain"]');
+            if (main) { main.scrollTo(0, 0); }
+            window.parent.scrollTo(0, 0);
+        </script>""", height=0)
     site=dry_creek if x=="Dry Creek at Saugstad" else(miners_ravine if x=="Miners Ravine at Orivetto Drive" else secret_ravine)
     site=site.copy()
     site.sort_values('Date')
