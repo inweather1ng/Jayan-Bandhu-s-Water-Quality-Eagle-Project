@@ -999,14 +999,7 @@ elif selected_tab=="Comparative analysis":
             ax.axhspan(5,6,color="red")
             ax.axhspan(6,7,color="yellow")
             ax.axhspan(7,10,color="green")
-            dodiff = [miners_ravine.iloc[n]['DO']-dry_creek.iloc[n]['DO'] for n in range(len(miners_ravine))]
-            for idx,val in enumerate(dodiff):
-                if abs(val)>1:
-                    txt="lower" if val<1 else "higher"
-                    st.info(f"""There is a significant difference in DO from Miners Ravine to dry creek, miners ravine's do is {abs(round(val,2))} {txt} during
-                    {miners_ravine['Date'].iloc[idx].month_name()}""")
-                elif abs(val) > 0.5:
-                    st.info(f"There is a slight difference in DO values during {miners_ravine['Date'].iloc[idx].month_name}, keep looking out for bigger changes") 
+
         else:
             ax.set_ylim(3,9)
             ax1.set_ylim(3,9)
@@ -1038,6 +1031,14 @@ elif selected_tab=="Comparative analysis":
     st.pyplot(fig)
     if len(param)==2:
         if param=="DO":
+            dodiff = [miners_ravine.iloc[n]['DO']-dry_creek.iloc[n]['DO'] for n in range(len(miners_ravine))]
+            for idx,val in enumerate(dodiff):
+                if abs(val)>1:
+                    txt="lower" if val<1 else "higher"
+                    st.info(f"""There is a significant difference in DO from Miners Ravine to dry creek, miners ravine's do is {abs(round(val,2))} {txt} during
+                    {miners_ravine['Date'].iloc[idx].month_name()}""")
+                elif abs(val) > 0.5:
+                    st.info(f"There is a slight difference in DO values during {miners_ravine['Date'].iloc[idx].month_name}, keep looking out for bigger changes") 
             st.markdown("""**DO**
 
         What it measures: The amount of gaseous oxygen dissolved in the water, essential for fish and aquatic organisms to breathe.
