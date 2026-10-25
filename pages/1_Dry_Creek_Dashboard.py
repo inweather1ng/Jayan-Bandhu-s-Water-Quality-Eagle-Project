@@ -341,7 +341,7 @@ if selected_tab=="Overview":
                 "Clear <10NTU"
                 if latest_turbidity <=10
                 else (
-                    "Cloudy" if latest_do <= 50  else "Opaque"
+                    "Cloudy" if latest_turbidity <= 50  else "Opaque"
                 )
             )
             color = (
@@ -451,7 +451,7 @@ if selected_tab=="Overview":
                 "Clear <10NTU"
                 if latest_turbidity <=10
                 else (
-                    "Cloudy" if latest_do <= 50  else "Opaque"
+                    "Cloudy" if latest_turbidity <= 50  else "Opaque"
                 )
             )
             color = (
@@ -507,7 +507,7 @@ if selected_tab=="Overview":
     )
     map=folium.Map(location=[38.74,-121.24],zoom_start=11)
     for idx,row in mapdata.iterrows():
-        folium.CircleMarker(location=[row["latitude"],row["longitude"]],popup=f"Click to view Site {row['label']} Data",fill=True,fill_color=row['fill'],tooltip=f"{row['label']} status: {row['health_status']}").add_to(map)
+        folium.CircleMarker(location=[row["latitude"],row["longitude"]],popup=f"For the {row['label']} site",fill=True,fill_color=row['fill'],tooltip=f"{row['label']} status: {row['health_status']}").add_to(map)
     map_out=st_folium(map,height=400,width=400)
     if map_out.get("last_object_clicked"):
         clicked_lat=map_out.get("last_object_clicked")['lat']
@@ -591,7 +591,7 @@ elif selected_tab=="Parameter deep dive":
 
         if chart and chart.get('selection',{}).get('points'):
             point=chart['selection']['points'][0]
-            if point.get('y_value')<7:
+            if point.get('y')<7:
                 do_healthy="stressed"
             else:
                 do_healthy="healthy"
