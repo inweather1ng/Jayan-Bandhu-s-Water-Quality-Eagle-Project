@@ -1,0 +1,8 @@
+# Sensitive credentials
+.streamlit/secrets.toml
+
+# Python virtual environments & cache
+.venv/
+venv/
+__pycache__/
+*.pyc
