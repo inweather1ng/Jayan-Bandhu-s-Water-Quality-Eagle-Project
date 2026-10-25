@@ -599,6 +599,8 @@ if selected_tab=="Overview":
     miners_ravine_health = miners_lat['DO']>7 and miners_lat['PH'] > 6.5 and miners_lat['PH']<8.5 and miners_lat['Turbidity']<10 and miners_lat['Water Temp']<20 and miners_lat["SPC"]<300
     dry_lat=dry_creek.iloc[-1]
     dry_creek_health = dry_lat['DO']>7 and dry_lat['PH'] > 6.5 and dry_lat['PH']<8.5 and dry_lat['Turbidity']<10 and dry_lat['Water Temp']<20 and dry_lat["SPC"]<300
+    sr_lat=secret_ravine.iloc[-1]
+    sr_health = sr_lat['DO']>7 and sr_lat['PH'] > 6.5 and sr_lat['PH']<8.5 and sr_lat['Turbidity']<10 and sr_lat['Water Temp']<20 and sr_lat["SPC"]<300
     if miners_ravine_health:
         miners_status = "Healthy"
     else:
@@ -607,6 +609,10 @@ if selected_tab=="Overview":
         dry_status="Healthy"
     else:
         dry_status="Stressed"
+    if sr_health:
+        sr_status="Healthy"
+    else:
+        sr_status="Stressed"
     # st.title("Dry creek water quality monitoring Site map")
     st.header("This is a map of our two sampling sites on the Dry Creek.")
     mapdata=pd.DataFrame(
@@ -615,14 +621,14 @@ if selected_tab=="Overview":
             "latitude": [38.752945,38.742738,38.759216],
             "longitude":[-121.241526,-121.284156,-121.256444],
              "label": ["Miners Ravine", "Saugstad park","Confluence"],
-             "fill":["green" if miners_status=="Healthy" else "red","green" if dry_status=="Healthy" else "red","gray"],
-             "health_status":[miners_status,dry_status,"No data yet"],
+             "fill":["green" if miners_status=="Healthy" else "red","green" if dry_status=="Healthy" else "red","green" if sr_status=="Healthy" else "red"],
+             "health_status":[miners_status,dry_status,sr_status],
             "site":["Miners Ravine at Orivetto Drive","Dry Creek at Saugstad","Secret Ravine near Confluence"]
          }
     )
     map=folium.Map(location=[38.75,-121.26],zoom_start=13)
     for idx,row in mapdata.iterrows():
-        folium.CircleMarker(location=[row["latitude"],row["longitude"]],popup=f"Click on this point to navigate to the {row['label']} site's deep dive page",color=row['fill'],fill=True,fill_color=row['fill'],tooltip=f"{row['label']} status: {row['health_status']},fill_opacity=0.8").add_to(map)
+        folium.CircleMarker(location=[row["latitude"],row["longitude"]],popup=f"Click on this point to navigate to the {row['label']} site's deep dive page",color=row['fill'],fill=True,fill_color=row['fill'],tooltip=f"{row['label']} status: {row['health_status']}",fill_opacity=0.8).add_to(map)
     map_out=st_folium(map,height=400,width=700)
     if map_out and  map_out.get("last_object_clicked"):
         clicked_lat=map_out["last_object_clicked"]['lat']
@@ -1152,9 +1158,9 @@ elif selected_tab=="Correlation analysis":
         col1,col2=st.columns(2)
         st.info("Small sample size, correlations may be unrepresentative")
         with col1:
-            st.metric(value=minerscorr,label="Correlation for miners ravine site",delta=txt+","+sign,delta_color="normal" if minerscorr>0.7 else "inverse")
+            st.metric(value=minerscorr,label="Correlation for miners ravine site",delta=txt+","+sign,delta_color="normal" if abs(minerscorr)>0.7 else "inverse")
         with col2:
-            st.metric(value=dry_creekcorr,label="Correlation for dry creek site",delta=txt2+","+sign2,delta_color="normal" if dry_creekcorr>0.7 else "inverse")
+            st.metric(value=dry_creekcorr,label="Correlation for dry creek site",delta=txt2+","+sign2,delta_color="normal" if abs(dry_creekcorr)>0.7 else "inverse")
 elif selected_tab=="PDF download":
         userinput=st.text_input(label="Give a prompt for what parameter you want to download and which site you want to download.")
         if userinput.strip():
