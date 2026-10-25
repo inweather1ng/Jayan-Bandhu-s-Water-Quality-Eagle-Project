@@ -1337,7 +1337,7 @@ elif selected_tab=="Feedback":
                         user_email = st.secrets['EMAIL_USER']
                         user_pass=st.secrets['USER_PASS']
                         adress=st.secrets['EMAIL']
-                        s
+                        
                         msg['From']=user_email
                         msg['To']=adress
                         print("set up path")
@@ -1347,7 +1347,7 @@ elif selected_tab=="Feedback":
                             smtp.send_message(msg)
                         st.success("Submitted and Registered")
                     except Exception as e:
-                        print(f"Encountered {e} while sending message")
+                        st.error(f"Encountered {e} while sending message")
 
 
 
