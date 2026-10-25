@@ -18,7 +18,7 @@ if "dry creek" not in st.session_state or "miners ravine" not in st.session_stat
         st.info("Files are not on the computer.")
 col1,col2=st.columns(2)
 with col1:
-    st.header("The app Structure:")
+    st.header("How to use the app:")
     st.write("You can view an example water quality dashboard of the Dry Creek, and then Visualize your own data files as well!")
 with col2:
     st.write("To navigate, use the sidebar on the left and get exploring!")
