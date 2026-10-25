@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 st.set_page_config(page_title="Do the Salmon like my creek?",layout="wide",page_icon="🐟")
 st.title("Do the Salmon like my creek?")
-st.header("A Water Quality/Salmon Habitat Suitability Data Visualization and Analysis Tool\n")
+st.header("A Water Quality and Environmental DNA(eDNA) Data Visualization and Analysis Tool.\n")
 
 
 
@@ -45,13 +45,13 @@ col1,col2=st.columns(2)
 
     
 with col1:
-    st.image("dccwatershed.png",caption="Map of the dry creek watershed, image courtesy of Dry creek Conservancy",use_container_width=True)
+    st.image("dccwatershed.png",caption="Map of the Dry Creek watershed, image courtesy of Dry creek Conservancy",use_container_width=True)
 
     
     
     
 with col2:
-    st.write("The Dry creek watershed stretches across 101 square miles through Placer and Sacramento counties. Native Fall-run Chinook Salmon and threatened Central Valley Steelhead Trout return to spawn. ")
+    st.write("The Dry Creek watershed stretches across 101 square miles through Placer and Sacramento counties. Native Fall-run Chinook Salmon and threatened Central Valley Steelhead Trout return here to spawn. ")
 
 st.link_button(url="https://drycreekconservancy.org",label="Learn more about the Dry Creek Conservancy")
 
