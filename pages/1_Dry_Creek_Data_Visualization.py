@@ -200,7 +200,7 @@ High Thermal Stress: > 21.0°C (Significantly reduces oxygen-holding capacity)""
 data=pd.read_csv("Waterquality.csv")
 reqcols=["DO","SPC","Turbidity","Water Temp","PH","Site"]
 # --- Main Layout ---
-st.title("Dry Creek Water Quality Monitoring and Salmon Suitability Project")
+st.title("Dry Creek Water Quality Monitoring and Salmon Habitat Suitability )
 # upload=(st.file_uploader(label="Enter your data here",type="csv"))
 # time.sleep(5)
 # is_valid=None
@@ -260,12 +260,12 @@ def on_tab_change():
     tab=selection
     st.session_state.active_tab=tab_names.index(tab)
 if selected_tab=="Overview":
-    st.header(f"Water Quality Dashboard and salmon sustainability monitor for The Dry Creek Watershed")
+    st.header(f"Water Quality Dashboard and Salmon Sustainability Monitor for the Dry Creek Watershed")
     st.space(size="small")
-    st.markdown("""This project is a monthly Water Quality monitoring project of the Dry Creek watershed. We are monitoring 5 different physiochemical parameters and 2 eDNA parameters. " \
-    **Our physiochemical parameters are**: Dissolved Oxygen(DO), Conductivity(SPC), Turbidity, Water temperature, and PH.""")
+    st.markdown("""This project is a monthly Water Quality monitoring project of the Dry Creek watershed. We are monitoring 5 different physiochemical parameters and 2 eDNA parameters. 
+    **Our physiochemical parameters are**: Dissolved Oxygen(DO), Conductivity(SPC), Turbidity, Water temperature, and pH.""")
     st.markdown("Our eDNA parameters we sample for are Benthic macroinvertebrates and New Zealand Mudsnails ")
-
+    
     
     st.subheader("Miners Ravine")
     if not miners_ravine.empty:
@@ -614,7 +614,8 @@ if selected_tab=="Overview":
     else:
         sr_status="Stressed"
     # st.title("Dry creek water quality monitoring Site map")
-    st.header("This is a map of our two sampling sites on the Dry Creek.")
+    st.header("This is a map of our three sampling sites along the Dry Creek Watershed.")\
+    st.write("Click on a point to view data by parameter for that site")
     mapdata=pd.DataFrame(
         {
             
@@ -628,7 +629,7 @@ if selected_tab=="Overview":
     )
     map=folium.Map(location=[38.75,-121.26],zoom_start=13)
     for idx,row in mapdata.iterrows():
-        folium.CircleMarker(location=[row["latitude"],row["longitude"]],popup=f"Click on this point to navigate to the {row['label']} site's deep dive page",color=row['fill'],fill=True,fill_color=row['fill'],tooltip=f"{row['label']} status: {row['health_status']}",fill_opacity=0.8).add_to(map)
+        folium.CircleMarker(location=[row["latitude"],row["longitude"]],color=row['fill'],fill=True,fill_color=row['fill'],tooltip=f"{row['label']} status: {row['health_status']}",fill_opacity=0.8).add_to(map)
     map_out=st_folium(map,height=400,width=700)
     if map_out and  map_out.get("last_object_clicked"):
         clicked_lat=map_out["last_object_clicked"]['lat']
@@ -828,7 +829,7 @@ Significant Runoff Pollution: > 500 µS/cm
         else:
             ph_healthy="healthy"
         st.info(f"Date: {point.get('x')} PH: {point.get('y')}, {ph_healthy}")
-    st.markdown("""**PH: **
+    st.markdown("""**PH:**
 
 What it measures: The logarithmic measure of hydrogen ion concentration, indicating how acidic or basic the water is on a scale of 0 to 14.
 
