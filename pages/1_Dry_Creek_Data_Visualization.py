@@ -693,9 +693,9 @@ if selected_tab=="Overview":
 
 elif selected_tab=="Parameter deep dive":
     x = st.selectbox(label="Select a site",options=["Dry Creek at Saugstad","Miners Ravine at Orivetto Drive","Secret Ravine near Confluence"],key="deep_dive_site")
-    if st.session_state.pop("deep_dive_site",False):
+    if st.session_state.pop("scroll_to_top", False):
         components.html("""<script>
-        const main = window.parent.document.querySelector(['data-testid="stMain"]');
+            const main = window.parent.document.querySelector('[data-testid="stMain"]');
             if (main) { main.scrollTo(0, 0); }
             window.parent.scrollTo(0, 0);
         </script>""", height=0)
