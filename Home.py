@@ -18,7 +18,7 @@ if "dry creek" not in st.session_state or "miners ravine" not in st.session_stat
         sc = data[data["Site"]=="JBDC03"]
         mr["Date"] = pd.to_datetime(mr["Date"], format="%m/%d/%Y",errors="coerce")
         dc["Date"] = pd.to_datetime(dc["Date"], format="%m/%d/%Y",errors="coerce")
-        sc["date] = pd.to_datetime(sc["Date"], format="%m/%d/%Y",errors="coerce")
+        sc["Date"] = pd.to_datetime(sc["Date"], format="%m/%d/%Y",errors="coerce")
         mr=mr.sort_values('Date')
         dc=dc.sort_values('Date')
         sc=sc.sort_values('Date')
