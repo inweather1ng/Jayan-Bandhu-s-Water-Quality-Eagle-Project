@@ -61,6 +61,12 @@ with st.container(border=True):
     
 
 st.header("\n\n\nData collection info")
-st.markdown(f"{len(mr)} Months of data have been collected. All physiochemical and biological data is being collected under an official QAPP with guidance from the California Water Boards. Physichemical data collected using state-grade equipment from the Sierra Streams Institute. ")
+st.markdown(f"""Data being collected monthly from July 2026 onward. 
+• All physiochemical and biological data is being collected under an official QAPP approved the California Water Boards. 
+• Data uploaded to California Environmental Data Exchange network(CEDEN). 
+• Clearance to proceed with project from city of Roseville. 
+• Physiochemical data collected using state-grade equipment from the Sierra Streams Institute. 
+• CDFW recommended eDNA sampling for New Zealand mudsnails. 
+• Environmental DNA Partners are the UC Santa Cruz CALeDNA program for BMI and the Jonah Ventures for New Zealand Mudsnails """)
 
 
