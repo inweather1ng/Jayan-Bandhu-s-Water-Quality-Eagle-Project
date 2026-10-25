@@ -103,7 +103,7 @@ def pdf_download(prompt,miners_ravine,dry_creek):
         table_data.append(["average",round(avgval,2),""])
         table_data.append(["minimum",round(minvl,2),""])
         table_data.append(["maximum",round(maxvL,2),""])
-        water_data = Table(table_data,colWidths=[120,80,100])
+        water_data = Table(table_data,colWidths=[120,100,100])
         water_data.setStyle(TableStyle([
     # Header Styling
     ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#1A365D")), # Dark navy header
@@ -127,7 +127,7 @@ def pdf_download(prompt,miners_ravine,dry_creek):
         
             
 
-        fig3,ax3=plt.subplots()
+        fig3,ax3=plt.subplots(figsize=(6,6))
         sns.lineplot(data=finaldf,x="Date",y=parameter,marker="o")
         ax3.tick_params(axis='x',labelsize=6)
         ax3.set_title(f"Data report for {parameter} over a {len(finaldf[parameter])} month period for the {site} site")
