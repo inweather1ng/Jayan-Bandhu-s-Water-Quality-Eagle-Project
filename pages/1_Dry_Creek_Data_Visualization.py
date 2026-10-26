@@ -1031,6 +1031,7 @@ elif selected_tab=="Comparative analysis":
     
     sns.lineplot(data=y2,x="Date",y=param,marker="o",color="gray",ax=ax1)
     st.pyplot(fig)
+    st.markdown("**Blue represents Miners Ravine, and gray represents Dry Creek**")
     if len(param)==2:
         if param=="DO":
             dodiff = [miners_ravine.iloc[n]['DO']-dry_creek.iloc[n]['DO'] for n in range(len(miners_ravine))]
@@ -1116,6 +1117,7 @@ Alkaline Warning: > 8.5""")
        Elevated Stress Zone: 18.0°C – 21.0°C
        
        High Thermal Stress: > 21.0°C (Significantly reduces oxygen-holding capacity)""")
+    
 elif selected_tab=="Correlation analysis":
     st.title("Correlation analysis between parameters")
     x=st.multiselect(
