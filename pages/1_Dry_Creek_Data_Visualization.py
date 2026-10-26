@@ -992,7 +992,7 @@ elif selected_tab=="Comparative analysis":
     y2=dry_creek[["Date",param]]
     y2=y2.sort_values(['Date'])
 
-    sns.lineplot(data=y1,x='Date',y=param,marker="o",color="blue",ax=ax)
+    sns.lineplot(data=y1,x='Date',y=param,marker="o",color="blue",ax=ax,label="Miners Ravine")
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%b"))
     if len(param)==2:
         if param=="DO":
@@ -1029,7 +1029,7 @@ elif selected_tab=="Comparative analysis":
 
 
     
-    sns.lineplot(data=y2,x="Date",y=param,marker="o",color="gray",ax=ax1)
+    sns.lineplot(data=y2,x="Date",y=param,marker="o",color="gray",ax=ax1,label="Dry Creek")
     st.pyplot(fig)
     st.markdown("**Blue represents Miners Ravine, and gray represents Dry Creek**")
     if len(param)==2:
