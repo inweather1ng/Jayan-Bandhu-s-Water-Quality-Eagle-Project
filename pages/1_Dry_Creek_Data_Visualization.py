@@ -1030,8 +1030,9 @@ elif selected_tab=="Comparative analysis":
 
     
     sns.lineplot(data=y2,x="Date",y=param,marker="o",color="gray",ax=ax1,label="Dry Creek")
+    fig.legend()
     st.pyplot(fig)
-    st.markdown("**Blue represents Miners Ravine, and gray represents Dry Creek**")
+    
     if len(param)==2:
         if param=="DO":
             dodiff = [miners_ravine.iloc[n]['DO']-dry_creek.iloc[n]['DO'] for n in range(len(miners_ravine))]
