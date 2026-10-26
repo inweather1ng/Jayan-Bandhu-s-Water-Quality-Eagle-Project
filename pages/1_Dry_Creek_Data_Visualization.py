@@ -979,7 +979,7 @@ High Thermal Stress: > 21.0°C (Significantly reduces oxygen-holding capacity)
     fig8.update_traces(
         line=dict(color="brown"),marker=dict(size=8,symbol="circle")
     )
-    fig.update_layout(yaxis_range=[0,30],xticks=dict(tickformat="%m/%d/%Y"))
+    fig.update_layout(yaxis_range=[0,30],xaxis=dict(tickformat="%m/%d/%Y"))
     chart=st.plotly_chart(fig8,use_container_width=True,selection_mode="points",key=f"{x} Air Temperature",on_select="rerun")
     if chart and chart.get('selection',{}).get('points'):
         point=chart['selection']['points'][0]
