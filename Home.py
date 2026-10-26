@@ -60,10 +60,10 @@ with st.container(border=True):
     
 
 st.header("\n\n\nData collection info")
-st.markdown(f"""Data being collected monthly from July 2026 onward. (Site 3 recently added October 2026) \n\n
-• All physiochemical and biological data is being collected under an official QAPP approved the State Water Boards. \n\n
-• Data uploaded to California Environmental Data Exchange network (CEDEN). \n\n
-• Clearance for water quality monitoring project obtained from the city of Roseville. """
+st.markdown(f"""I started collecting data monthly from July 2026 onward. (Site 3 recently added October 2026) \n\n
+• I developed a QAPP with guidance from the State Water Boards for Physicochemical and Biological data. \n\n
+• Data has been submitted to the California Environmental Data Exchange network (CEDEN). \n\n
+• I have received Clearance for the water quality monitoring project obtained from the city of Roseville. """
 )
 
 
