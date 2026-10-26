@@ -272,7 +272,7 @@ if selected_tab=="Overview":
     **Our physiochemical parameters are**: Dissolved Oxygen(DO), Conductivity(SPC), Turbidity, Water temperature, and pH.""")
     st.markdown("Our eDNA parameters we sample for are Benthic macroinvertebrates and New Zealand Mudsnails ")
     
-    st.header(f"Most Recent Data Points, as of {miners_ravine['Date].iloc[-1].month_name()} {miners_ravine['Date'].iloc[-1].dt.year}  ")
+    st.header(f"Most Recent Data Points, as of {miners_ravine['Date'].iloc[-1].month_name()} {miners_ravine['Date'].iloc[-1].year} ")
     st.subheader("Miners Ravine")
     if not miners_ravine.empty:
         latest_row = miners_ravine.iloc[-1]
