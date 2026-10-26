@@ -3,7 +3,7 @@ import pandas as pd
 st.set_page_config(page_title="Do the Salmon like my creek?",layout="wide",page_icon="🐟")
 st.title("Do the Salmon like my creek?")
 st.header("A Water Quality and Environmental DNA (eDNA) Data Visualization and Analysis Tool.\n")
-
+st.caption("If on mobile, click on the chevron (>>) on the top left to navigate")
 
 
 
