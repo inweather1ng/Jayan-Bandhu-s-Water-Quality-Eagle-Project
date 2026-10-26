@@ -268,7 +268,7 @@ def on_tab_change():
     st.session_state.active_tab=tab_names.index(tab)
 if selected_tab=="Overview":
     st.space(size="small")
-    st.caption("If on mobile, use the chevron on the top left to navigate app.")
+    st.caption("If on mobile, click on the chevron (>>) on the top left to navigate app.")
     st.markdown("""Most recent water quality data for the Dry Creek watershed. Monitoring includes 5 different physiochemical parameters and 2 eDNA parameters. 
     **Our physiochemical parameters are**: Dissolved Oxygen(DO), Conductivity(SPC), Turbidity, Water temperature, and pH.""")
     st.markdown("Our eDNA parameters we sample for are Benthic macroinvertebrates and New Zealand Mudsnails ")
