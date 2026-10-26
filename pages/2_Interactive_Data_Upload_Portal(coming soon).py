@@ -18,7 +18,7 @@ if file is not None:
         
 
         date=st.selectbox(label="Date Column(Required)",options=cols,index=cols.index('Date') if 'Date' in cols else 0)
-        site=st.selectbox(label="site column:",options=cols, index=cols.index('Site')+1 if 'Site' in cols else 0)
+        site=st.selectbox(label="site column:",options=cols, index=cols.index('Site') if 'Site' in cols else 0)
         do=st.selectbox(label="DO column",options=['None']+cols,index=cols.index('DO')+1 if 'DO' in cols else 0)
         conductivity=st.selectbox(label="Couductivity Column:",options=['None']+cols,index=cols.index('Conductivity')+1 if 'Conductivity' in cols else 0)
     with col2:
@@ -26,7 +26,7 @@ if file is not None:
         turbidity=st.selectbox(label="Turbidity Column",options=['None']+cols,index=cols.index("Turbidity")+1 if 'Turbidity' in cols else 0)
         water_temp=st.selectbox(label="Temperature Column",options=['None']+cols,index=cols.index("Water Temperature")+1 if 'Water Temperature' in cols else 0)
 
-    results=[date,do,conductivity,ph,turbidity,water_temp]
+    results=[date,do,conductivity,ph,turbidity,water_temp,site]
     final=list(filter(lambda x: x != "None",results))
     final_df=file[final].copy()
     try:
