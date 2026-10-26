@@ -272,7 +272,7 @@ if selected_tab=="Overview":
     **Our physiochemical parameters are**: Dissolved Oxygen(DO), Conductivity(SPC), Turbidity, Water temperature, and pH.""")
     st.markdown("Our eDNA parameters we sample for are Benthic macroinvertebrates and New Zealand Mudsnails ")
     
-    
+    st.header("Most Recent Data Points, as of {miners_ravine["Date"].iloc[-1].month_name()} {miners_ravine["Date"].iloc[-1].dt.year  ")
     st.subheader("Miners Ravine")
     if not miners_ravine.empty:
         latest_row = miners_ravine.iloc[-1]
@@ -975,6 +975,27 @@ High Thermal Stress: > 21.0°C (Significantly reduces oxygen-holding capacity)
 
 """,unsafe_allow_html=False)
     st.space("small")
+    fig8=px.line(site,x=site["Date"],y=site["Air Temp"],markers=True,labels={"Date":"date","Air Temp":"Air Temp"})
+    fig8.update_traces(
+        line=dict(color="brown"),marker=dict(size=8,symbol="circle")
+    )
+    fig.update_layout(yaxis_range=[0,30],xticks=dict(tickformat="%m/%d/%Y"))
+    chart=st.plotly_chart(fig8,use_container_width=True,selection_mode="points",key=f"{x} Air Temperature",on_select="rerun")
+    if chart and chart.get('selection',{}).get('points'):
+        point=chart['selection']['points'][0]
+        st.info(f"Date: {point.get('x')} Air Temoerature: {point.get('y')}")
+    st.markdown("""**Air temperature** 
+    What it measures: Air temperature measures if the air is hot or cold
+
+    Why it matters: Air temperature directly correlates with water temperature, making it key for parameters like Dissolved Oxygen""")
+
+    st.subheader("Full Data report")
+    st.dataframe(site)
+    
+                
+    
+    
+    
         
 
 
@@ -1049,7 +1070,7 @@ elif selected_tab=="Comparative analysis":
             for idx,val in enumerate(dodiff):
                 if abs(val)>1:
                     txt="lower" if val<1 else "higher"
-                    st.info(f"""There is a significant difference in DO from Miners Ravine to dry creek, miners ravine's do is {abs(round(val,2))} {txt} during
+                    st.info(f"""There is a significant difference in DO from Miners Ravine to dry creek, miners ravine's DO is {abs(round(val,2))} {txt} during
                     {miners_ravine['Date'].iloc[idx].month_name()}""")
                 elif abs(val) > 0.5:
                     st.info(f"There is a slight difference in DO values during {miners_ravine['Date'].iloc[idx].month_name}, keep looking out for bigger changes") 
@@ -1132,7 +1153,7 @@ elif selected_tab=="Correlation analysis":
     st.title("Correlation analysis between parameters")
     x=st.multiselect(
         label="Select two parameters to compare",options={"DO":"DO",
-                                                          "SPC":"SPC","Turbidity":"Turbidity","PH":"PH","Water Temp":"Water Temp",
+                                                          "SPC":"SPC","Turbidity":"Turbidity","PH":"PH","Water Temp":"Water Temp","Air Temp":"Air Temp"
                                                           },max_selections=2,default=["DO","Water Temp"]
     )
     if len(x)!=2:
@@ -1177,7 +1198,7 @@ elif selected_tab=="Correlation analysis":
         with col2:
             st.metric(value=dry_creekcorr,label="Correlation for dry creek site",delta=txt2+","+sign2,delta_color="normal" if abs(dry_creekcorr)>0.7 else "inverse")
 elif selected_tab=="PDF download":
-        userinput=st.text_input(label="Give a prompt for what parameter you want to download and which site you want to download.")
+        userinput=st.text_input(label="Give a prompt for what parameter you want to download and which site you want to download (for temperature specify air or water).")
         if userinput.strip():
             pdf_download(userinput,miners_ravine,dry_creek)
 elif selected_tab=="eDNA results":
