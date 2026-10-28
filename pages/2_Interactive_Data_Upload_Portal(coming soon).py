@@ -43,9 +43,9 @@ if file is not None:
             
 
 
-            tab1,tab2,tab3,tab4=st.tabs(['Water Quality Dashboard','Parameter plots','Correlation analysis',"simulation"])
-            with tab1:
-                st.title(f"Water Quality Dashboard for the {watershed} watershed"
+        tab1,tab2,tab3,tab4=st.tabs(['Water Quality Dashboard','Parameter plots','Correlation analysis',"simulation"])
+        with tab1:
+            st.title(f"Water Quality Dashboard for the {watershed} watershed"
             )
             select=st.selectbox(label="Select the site you want to view Data for",options=unique_sites)
             specialdf=final_df[final_df[site]==select]
@@ -167,6 +167,7 @@ if file is not None:
                         delta_color=color
             )
                 st.header("Interactive point mapping")
+            
     except Exception as e:
         st.error(f"Found {e}, retry column mapping")
 
