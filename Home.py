@@ -65,5 +65,11 @@ st.markdown(f"""• I started collecting data monthly from July 2026 onwards. (S
 • Data has been submitted to the California Environmental Data Exchange network (CEDEN). \n\n
 • I have received Clearance for the water quality monitoring project obtained from the city of Roseville. """
 )
+st.space("large")
+col1,col2=st.columns(2)
+with col1:
+    st.markdown("Special thanks to the **Sierra Streams Institute** for providing training")
+with col2:
+    st.image("SS_Logo_Color.jpg")
 
 
