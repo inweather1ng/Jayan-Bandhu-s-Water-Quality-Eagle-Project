@@ -48,7 +48,7 @@ if file is not None:
             select=st.selectbox(label="Select the site you want to view Data for",options=unique_sites)
             specialdf=final_df[final_df[site]==select]
             
-            if specialdf.empty:
+            if not specialdf.empty:
                 st.success("SUccessfuly proccesed Your Data")
                 latest_row=specialdf.iloc[-1]
                 colors=[]
