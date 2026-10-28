@@ -33,8 +33,10 @@ if file is not None:
         for c in list(final_df.columns):
             if c!=results[0]:
                 final_df[c]=pd.to_numeric(final_df[c],errors="coerce")
-        final_df[date]=pd.to_datetime(final_df[date])
+        final_df[date]=pd.to_datetime(final_df[date],errors="coerce")
         final_df=final_df.sort_values(date).dropna(subset=[date])
+        if final_df.empty():
+            st.error("empty data")
         if site!="None":
             unique_sites=file[site].unique()
             
