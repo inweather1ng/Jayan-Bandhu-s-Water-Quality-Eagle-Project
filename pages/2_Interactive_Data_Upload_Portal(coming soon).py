@@ -47,115 +47,120 @@ if file is not None:
             )
             select=st.selectbox(label="Select the site you want to view Data for",options=unique_sites)
             specialdf=final_df[final_df[site]==select]
-            if not specialdf.empty:
-                latest_row=specialdf.iloc[-1]
-                colors=[]
+            
+            latest_row=specialdf.iloc[-1]
+            colors=[]
             
 
-            latest_do = latest_row[do]
-            latest_cond = latest_row[conductivity]
-            latest_ph = latest_row[ph]
-            latest_turbidity=latest_row[turbidity]
-            latest_temp=latest_row[water_temp]
+            latest_do = latest_row[do] if do != "None" else "N/A"
+            latest_cond = latest_row[conductivity] if conductivity != "None" else "N/A"
+            latest_ph = latest_row[ph] if ph != "None" else "N/A"
+            latest_turbidity=latest_row[turbidity] if turbidity != "None" else "N/A"
+            latest_temp=latest_row[water_temp] if water_temp != "None"  else  "N/A"
 
             col1, col2, col3, col4,col5 = st.columns(5)
             with col1:
-                do_healthy = (
-                "Healthy > 7 (mg/l)"
-                if latest_do >= 7
-                else (
+                if do != "None":
+                    do_healthy = (
+                    "Healthy > 7 (mg/l)"
+                    if latest_do >= 7
+                    else (
                     "Tolerable" if latest_do >= 5 and latest_do < 7 else "Stressed"
-                )
-            )
-                color = (
-                "normal"
-                if latest_do >= 7
-                else ("off" if latest_do >= 5 and latest_do < 7 else "inverse")
-            )
-                st.metric(
-                label="Dissolved Oxygen",
-                value=f"{latest_do} mg/L",
-                delta=do_healthy,
-                delta_color=color,
-            )
+                    ) 
+                    )
+                    color = (
+                    "normal"
+                    if latest_do >= 7
+                    else ("off" if latest_do >= 5 and latest_do < 7 else "inverse")
+                    )
+                    st.metric(
+                    label="Dissolved Oxygen",
+                    value=f"{latest_do} mg/L",
+                    delta=do_healthy,
+                    delta_color=color,
+                    )
 
             with col2:
-                cond_healthy = (
+                if conductivity != "None":
+                    cond_healthy = (
                 "Healthy <150 "
-                if latest_cond <= 150
-                else (
+                    if latest_cond <= 150
+                    else (
                     "Moderate(150-500)"
-                    if latest_cond > 150 and latest_cond <= 500
-                    else "Stressed(>500)"
-                )
-            )
-                color2 = (
+                        if latest_cond > 150 and latest_cond <= 500
+                        else "Stressed(>500)"
+                    )
+                    )
+                    color2 = (
                 "normal"
-                if latest_cond <= 150
-                else (
+                    if latest_cond <= 150
+                    else (
                     "off"
-                    if latest_cond > 150 and latest_cond <= 500
-                    else "inverse"
+                        if latest_cond > 150 and latest_cond <= 500
+                        else "inverse"
+                    )
                 )
-            )
-                st.metric(
-                label="Conductivity",
-                value=f"{latest_cond} µS/cm",
-                delta=cond_healthy,
-                delta_color=color2,
+                    st.metric(
+                    label="Conductivity",
+                    value=f"{latest_cond} µS/cm",
+                    delta=cond_healthy,
+                    delta_color=color2,
             )
             with col3:
-                ph_healthy = (
+                if ph !="None":
+                    ph_healthy = (
                 "Normal: 6.5-8.5"
-                if latest_ph >= 6.5 and latest_ph<=8.5
-                else (
-                    "Alkali" if latest_ph >= 8.5  else "Acidic"
+                    if latest_ph >= 6.5 and latest_ph<=8.5
+                    else (
+                    "alkali" if latest_ph >= 8.5  else "Acidic"
+                    )
                 )
-            )
-                color = (
+                    color = (
                 "normal"
-                if latest_ph >= 6.5 and latest_ph<=8.5
-                else "inverse"
-            )
-                st.metric(
-                label="PH",
-                value=f"{latest_ph}",
-                delta=ph_healthy,
-                delta_color=color,
-            )
+                    if latest_ph >= 6.5 and latest_ph<=8.5
+                    else "inverse"
+                )
+                    st.metric(
+                    label="PH",
+                    value=f"{latest_ph}",
+                    delta=ph_healthy,
+                    delta_color=color,
+                )
             with col4:
-                t_healthy = (
+                if turbidity!="None":
+                    t_healthy = (
                 "Clear <10NTU"
-                if latest_turbidity <=10
-                else (
+                    if latest_turbidity <=10
+                    else (
                     "Cloudy" if latest_do <= 50  else "Opaque"
                 )
             )
-                color = (
+                    color = (
                 "normal"
-                if latest_turbidity <= 10
-                else ("off" if latest_turbidity <= 50  else "inverse")
+                    if latest_turbidity <= 10
+                    else ("off" if latest_turbidity <= 50  else "inverse")
             )
-                st.metric(
-                label="Turbidity",
-                value=f"{latest_turbidity} NTU",
-                delta=t_healthy,
-                delta_color=color,
+                    st.metric(
+                    label="Turbidity",
+                    value=f"{latest_turbidity} NTU",
+                    delta=t_healthy,
+                    delta_color=color,
             )
             with col5:
-                temp_healthy=(
+                if water_temp !="None":
+                    temp_healthy=(
                 "Sustainable"
-                if latest_temp>=10 and latest_temp<=20
-                else("Hot" if latest_temp>20 else "cold")
+                    if latest_temp>=10 and latest_temp<=20
+                    else("Hot" if latest_temp>20 else "cold")
             )
-                color=(
+                    color=(
                 "normal"if latest_temp>=10 and latest_temp<=21 else"inverse"
             )
-                st.metric(
-                label="Water temperature",
-                value=f"{latest_temp} degrees celsius",
+                    st.metric(
+                    label="Water temperature",
+                    value=f"{latest_temp} degrees celsius",
                 delta=temp_healthy,
-                delta_color=color
+                    delta_color=color
             )
         st.header("Interactive point mapping")
     except Exception as e:
