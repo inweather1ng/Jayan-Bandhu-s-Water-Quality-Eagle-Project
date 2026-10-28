@@ -1162,11 +1162,11 @@ elif selected_tab=="Correlation analysis":
         else:
             sign2="Negative"
         col1,col2=st.columns(2)
-        st.info("Small sample size, correlations may be unrepresentative")
+        st.info("Small sample size, correlations may not represent actual relationships")
         with col1:
-            st.metric(value=minerscorr,label="Correlation for miners ravine site",delta=txt+","+sign,delta_color="normal" if abs(minerscorr)>0.7 else "inverse")
+            st.metric(value=minerscorr,label="Correlation coefficient(r) for miners ravine site",delta=txt+","+sign,delta_color="normal" if abs(minerscorr)>0.7 else "inverse")
         with col2:
-            st.metric(value=dry_creekcorr,label="Correlation for dry creek site",delta=txt2+","+sign2,delta_color="normal" if abs(dry_creekcorr)>0.7 else "inverse")
+            st.metric(value=dry_creekcorr,label="Correlation coefficient(r) for dry creek site",delta=txt2+","+sign2,delta_color="normal" if abs(dry_creekcorr)>0.7 else "inverse")
 elif selected_tab=="PDF download":
         userinput=st.text_input(label="Give a prompt for what parameter you want to download and which site you want to download (for temperature specify air or water).")
         if userinput.strip():
