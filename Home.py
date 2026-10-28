@@ -70,6 +70,6 @@ col1,col2=st.columns(2)
 with col1:
     st.markdown("Special thanks to the **Sierra Streams Institute** for providing training")
 with col2:
-    st.image("SS_Logo_Color.jpg",width=50)
+    st.image("SS_Logo_Color.jpg",width=100)
 
 
