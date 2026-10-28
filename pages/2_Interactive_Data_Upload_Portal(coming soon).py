@@ -25,7 +25,7 @@ if file is not None:
         ph=st.selectbox(label="PH column",options=['None']+cols,index=cols.index('PH')+1 if 'PH' in cols else 0)
         turbidity=st.selectbox(label="Turbidity Column",options=['None']+cols,index=cols.index("Turbidity")+1 if 'Turbidity' in cols else 0)
         water_temp=st.selectbox(label="Temperature Column",options=['None']+cols,index=cols.index("Water Temperature")+1 if 'Water Temperature' in cols else 0)
-
+    file[site]=file[site].astype(str).str.strip()
     results=[date,do,conductivity,ph,turbidity,water_temp,site]
     final=list(filter(lambda x: x != "None",results))
     final_df=file[final].copy()
