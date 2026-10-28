@@ -31,7 +31,7 @@ if file is not None:
     final_df=file[final].copy()
     try:
         for c in list(final_df.columns):
-            if c!=results[0]:
+            if c!=results[0] and c!=results[-1]:
                 final_df[c]=pd.to_numeric(final_df[c],errors="coerce")
         final_df[date]=pd.to_datetime(final_df[date],errors="coerce")
         final_df=final_df.sort_values(date).dropna(subset=[date])
