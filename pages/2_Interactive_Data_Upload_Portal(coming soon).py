@@ -38,7 +38,7 @@ if file is not None:
         if site!="None":
             unique_sites=file[site].unique()
             
-            st.success("SUccessfuly proccesed Your Data")
+            
 
 
             tab1,tab2,tab3,tab4=st.tabs(['Water Quality Dashboard','Parameter plots','Correlation analysis',"simulation"])
@@ -47,7 +47,9 @@ if file is not None:
             )
             select=st.selectbox(label="Select the site you want to view Data for",options=unique_sites)
             specialdf=final_df[final_df[site]==select]
+            
             if specialdf is not None:
+                st.success("SUccessfuly proccesed Your Data")
                 latest_row=specialdf.iloc[-1]
                 colors=[]
             
