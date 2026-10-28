@@ -63,7 +63,7 @@ st.header("\n\n\nData collection info")
 st.markdown(f"""• I started collecting data monthly from July 2026 onwards. (Site 3 recently added October 2026) \n\n
 • I developed a QAPP with guidance from the State Water Boards for Physicochemical and Biological data. \n\n
 • Data has been submitted to the California Environmental Data Exchange network (CEDEN). \n\n
-• I have received Clearance for the water quality monitoring project obtained from the city of Roseville. """
+• I have received Clearance for the water quality monitoring project from the city of Roseville. """
 )
 st.space("large")
 col1,col2=st.columns(2)
