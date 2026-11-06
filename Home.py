@@ -84,10 +84,8 @@ st.markdown(f"""• I started collecting data monthly from July 2026 onwards. (S
 st.space("large")
 col1,col2=st.columns(2)
 with col1:
-    st.markdown("Special thanks to the **Sierra Streams Institute** for providing training")
-    st.markdown("Special thanks to the **Dry Creek Conservancy** for project sponsorship")
+    st.markdown("Special thanks to the **Sierra Streams Institute** for providing training for conducting water quality monitoring and equipment")
 with col2:
     st.image("SS_Logo_Color.jpg",width=100)
-    st.image("pages/dcc_logo.png",width=100)
 
 
