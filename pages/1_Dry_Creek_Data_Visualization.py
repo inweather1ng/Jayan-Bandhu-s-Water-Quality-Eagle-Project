@@ -35,6 +35,9 @@ st.markdown(
 [data-testid="stMetricDelta"] {
     font-size:10px;
 }
+@media (min-width: 769px) {
+    .st-key-mobile_nav { display: none; }
+}
 </style>
 """,
     unsafe_allow_html=True,
@@ -218,6 +221,8 @@ tab_names=["Overview","Parameter deep dive", "Comparative analysis","Correlation
 if "jump_to" in st.session_state:
     st.session_state.nav=st.session_state.pop("jump_to")
 selected_tab=st.sidebar.radio("Select Tab",tab_names,key="nav")
+with st.container(key="mobile_nav"):
+    st.radio("Select Tab",tab_names,horizontal=True,index=tab_names.index(selected_tab),key="m_nav",on_change=lambda: st.session_state.update(nav=st.session_state.m_nav))
 #st.session_state.active_tab=tab_names.index(selected_tab)
 
     
