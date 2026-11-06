@@ -38,6 +38,7 @@ st.markdown(
 @media (min-width: 769px) {
     .st-key-mobile_nav { display: none; }
 }
+[data-testid="stToolbarActions"], [data-testid="stMainMenu"] { display: none !important; }
 </style>
 """,
     unsafe_allow_html=True,
