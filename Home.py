@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 st.set_page_config(page_title="Do the Salmon like my creek?",layout="wide",page_icon="🐟")
-st.image("dcc_logo.png",width=100)
+st.image("pages/dcc_logo.png",width=100)
 st.title("Do the Salmon like my creek?")
 st.header("A Water Quality and Environmental DNA (eDNA) Data Visualization and Analysis Tool.\n")
 st.caption("If on mobile, click on the chevron (>>) on the top left to navigate")
@@ -87,6 +87,6 @@ with col1:
     st.markdown("Special thanks to the **Dry Creek Conservancy** for project sponsorship")
 with col2:
     st.image("SS_Logo_Color.jpg",width=100)
-    st.image("dcc_logo.png",width=100)
+    st.image("pages/dcc_logo.png",width=100)
 
 
