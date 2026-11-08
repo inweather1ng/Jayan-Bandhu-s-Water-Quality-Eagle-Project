@@ -20,8 +20,8 @@ st.subheader("5-Year Regional Watershed Time-Series & Multi-Parameter Analysis (
 # ==============================================================================
 st.info(
     "🚧 **COMING SOON — Regional CEDEN & Live USGS Watershed Comparison**\n\n"
-    "This module is currently being finalized as we complete our Dry Creek CEDEN data uploads, "
-    "comparing **Dry Creek Watershed (Roseville)** against reference Northern California Chinook salmon watersheds."
+   # "This module is currently being finalized as we complete our Dry Creek CEDEN data uploads, "
+   # "comparing **Dry Creek Watershed (Roseville)** against reference Northern California Chinook salmon watersheds."
 )
 
 # Hold off on executing the live interactive CEDEN/USGS code below while keeping all code intact:
