@@ -50,6 +50,7 @@ if "dry creek" in st.session_state and "miners ravine" in st.session_state and "
 with st.container(border=True):
     st.write("Come to the Dry Creek Conservancy's Salmon homecoming event on :red[November 8] for a :red[live presentation of this Dashboard] and more!")
     st.write("Event will be held at Royer park")
+    st.image("pages/dcc_logo.png",width=100)
     st.link_button(url="https://www.drycreekconservancy.org/events/",label="More info here",type="primary")
 
 
