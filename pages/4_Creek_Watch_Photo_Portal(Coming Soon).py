@@ -20,7 +20,7 @@ st.title("Creek Trash Watch")
 # ==============================================================================
 st.info(
     "🚧 **COMING SOON — Creek Trash Watch (Community Photo & Habitat Reporting Portal)**\n\n"
-    "Two-step GPS map-tagging and photo upload portal covering all 15 creeks and tributaries "
+    "Two-step GPS map-tagging and photo upload portal covering all creeks and tributaries "
     "across the 101-sq-mi **Dry Creek Watershed**."
 )
 
