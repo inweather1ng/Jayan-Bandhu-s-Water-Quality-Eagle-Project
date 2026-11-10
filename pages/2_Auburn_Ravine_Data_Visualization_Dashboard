@@ -17,3 +17,9 @@ import plotly.express as px
 import smtplib
 from email.message import EmailMessage
 from profanity_check import predict,predict_prob
+def censor(message):
+    is_profane=predict([message])[0]
+    prob = predict_prob([message])[0]
+    if is_profane==1 or prob>0.8:
+        return -1
+    return message
