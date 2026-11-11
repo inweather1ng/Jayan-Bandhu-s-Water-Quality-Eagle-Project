@@ -342,11 +342,11 @@ if selected_tab=="Overview":
         with col5:
             temp_healthy=(
                 "Sustainable"
-                if latest_temp>=10 and latest_temp<=20
-                else("Hot" if latest_temp>20 else "cold")
+                if latest_temp>=10 and latest_temp<=18
+                else("Hot" if latest_temp>18 else "cold")
             )
             color=(
-                "normal"if latest_temp>=10 and latest_temp<=21 else"inverse"
+                "normal"if latest_temp>=10 and latest_temp<=18 else"inverse"
             )
             st.metric(
                 label="Water temperature",
@@ -456,7 +456,7 @@ if selected_tab=="Overview":
                 else ("Warm" if latest_temp <= 21 else "Hot")
             )
             color=(
-                "normal"if latest_temp>=10 and latest_temp<=21 else"inverse"
+                "normal"if latest_temp>=10 and latest_temp<=18 else"inverse"
             )
             st.metric(
                 label="Water temperature",
@@ -563,10 +563,10 @@ if selected_tab=="Overview":
             temp_healthy=(
                 "Healthy"
                 if  latest_temp<=18
-                else ("Warm" if latest_temp <= 21 else "Hot")
+                else ("Warm" if latest_temp <= 18 else "Hot")
             )
             color=(
-                "normal"if latest_temp>=10 and latest_temp<=21 else"inverse"
+                "normal"if latest_temp>=10 and latest_temp<=18 else"inverse"
             )
             st.metric(
                 label="Water temperature",
@@ -575,11 +575,11 @@ if selected_tab=="Overview":
                 delta_color=color
             )
     miners_lat=miners_ravine.iloc[-1]
-    miners_ravine_health = miners_lat['DO']>7 and miners_lat['PH'] > 6.5 and miners_lat['PH']<8.5 and miners_lat['Turbidity']<10 and miners_lat['Water Temp']<20 and miners_lat["SPC"]<300
+    miners_ravine_health = miners_lat['DO']>7 and miners_lat['PH'] > 6.5 and miners_lat['PH']<8.5 and miners_lat['Turbidity']<10 and miners_lat['Water Temp']<18 and miners_lat["SPC"]<300
     dry_lat=dry_creek.iloc[-1]
-    dry_creek_health = dry_lat['DO']>7 and dry_lat['PH'] > 6.5 and dry_lat['PH']<8.5 and dry_lat['Turbidity']<10 and dry_lat['Water Temp']<20 and dry_lat["SPC"]<300
+    dry_creek_health = dry_lat['DO']>7 and dry_lat['PH'] > 6.5 and dry_lat['PH']<8.5 and dry_lat['Turbidity']<10 and dry_lat['Water Temp']<18 and dry_lat["SPC"]<300
     sr_lat=secret_ravine.iloc[-1]
-    sr_health = sr_lat['DO']>7 and sr_lat['PH'] > 6.5 and sr_lat['PH']<8.5 and sr_lat['Turbidity']<10 and sr_lat['Water Temp']<20 and sr_lat["SPC"]<300
+    sr_health = sr_lat['DO']>7 and sr_lat['PH'] > 6.5 and sr_lat['PH']<8.5 and sr_lat['Turbidity']<10 and sr_lat['Water Temp']<18 and sr_lat["SPC"]<300
     if miners_ravine_health:
         miners_status = "Healthy"
     else:
@@ -908,8 +908,8 @@ Heavy Erosion / Storm Event: > 50 NTU
             yaxis_range=[10,30],
             xaxis=dict(tickformat="%m/%d/%Y"),
             shapes=[
-                dict(xref="paper",yref="y",x0=0,x1=1,y0=10,y1=20,fillcolor="green",opacity=0.5,layer="below",line_width=0),
-                dict(xref="paper",yref="y",x0=0,x1=1,y0=20,y1=25,fillcolor="yellow",opacity=0.5,layer="below",line_width=0),
+                dict(xref="paper",yref="y",x0=0,x1=1,y0=10,y1=18,fillcolor="green",opacity=0.5,layer="below",line_width=0),
+                dict(xref="paper",yref="y",x0=0,x1=1,y0=18,y1=25,fillcolor="yellow",opacity=0.5,layer="below",line_width=0),
                 dict(xref="paper",yref="y",x0=0,x1=1,y0=25,y1=30,fillcolor="red",opacity=0.5,layer="below",line_width=0)
 
             ]
@@ -919,10 +919,10 @@ Heavy Erosion / Storm Event: > 50 NTU
     if chart and chart.get('selection',{}).get('points'):
         point=chart['selection']['points'][0]
         if point.get('y')>25:
-            temp_healthy="Too warm for cold water species"
+            temp_healthy="Too warm for Salmon survival"
         
-        elif point.get('y')>20:
-            temp_healthy="Warmer than normal"
+        elif point.get('y')>18:
+            temp_healthy="Upper limit for Salmon"
         else:
             temp_healthy="Healthy"
         st.info(f"Date: {point.get('x')} Water Temperature: {point.get('y')}, {temp_healthy}")
@@ -1028,8 +1028,8 @@ elif selected_tab=="Comparative analysis":
     elif param=="Water Temp":
         ax.set_ylim(10,30)
         ax1.set_ylim(10,30)
-        ax.axhspan(10,20,color="green")
-        ax.axhspan(20,30,color="red")
+        ax.axhspan(10,18,color="green")
+        ax.axhspan(18,30,color="red")
     
     ax1.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
 
